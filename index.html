@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>🎂 Happiest Birthday Pagliiiii ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #16001c, #42003a, #290037);
+  font-family: "Poppins", sans-serif;
+  color: white;
+  overflow: hidden;
+}
+
+/* Confetti Animation */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: gold;
+  animation: fall 4s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-10vh) rotate(0deg); }
+  100% { transform: translateY(110vh) rotate(360deg); }
+}
+
+/* Main container */
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* Glow text */
+.title {
+  font-size: 45px;
+  font-weight: bold;
+  text-shadow: 0px 0px 20px #ff9ad5, 0px 0px 40px #ff4ab0;
+  animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ff70be; }
+  to { text-shadow: 0 0 40px #ff2fb1; }
+}
+
+/* Smooth typewriter birthday message */
+.typeText {
+  font-size: 22px;
+  width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 3px solid #ff2fb1;
+  margin-top: 15px;
+  animation: typing 5s steps(50, end) forwards, blink .7s infinite;
+}
+
+@keyframes typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
+}
+
+/* Balloon image */
+img {
+  width: 260px;
+  margin-top: 30px;
+  border-radius: 18px;
+  opacity: 0;
+  animation: pop 2s forwards 5.2s ease;
+  box-shadow: 0px 0px 25px #ff2fb1;
+}
+
+@keyframes pop {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Confetti Script -->
+<script>
+for(let i=0; i<50; i++){
+  let confetti = document.createElement("div");
+  confetti.classList.add("confetti");
+  confetti.style.left = Math.random()*100 + "vw";
+  confetti.style.animationDuration = (3 + Math.random()*2) + "s";
+  confetti.style.background = ["#FF3EA5","#FFB700","#7C83FD","#FF5D73"][Math.floor(Math.random()*4)];
+  document.body.appendChild(confetti);
+}
+</script>
+
+<div class="container">
+  <div class="title">🎂 Happy Birthday, Pagliiiii 💗</div>
+
+  <div class="typeText">
+    May your day be filled with love, laughter and everything you deserve ❤️✨
+  </div>
+
+  <img src="https://i.imgur.com/tXQnYqR.jpeg">
+</div>
+
+</body>
+</html>
