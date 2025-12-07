@@ -1,115 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>🎂 Happiest Birthday Pagliiiii ❤️</title>
+<meta charset="UTF-8" />
+<title>🎂 Happy Birthday Pagliiiii ❤️</title>
 
 <style>
 body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(135deg, #16001c, #42003a, #290037);
+  background: linear-gradient(135deg,#16001c,#2b0033,#450046);
+  overflow: hidden;
   font-family: "Poppins", sans-serif;
   color: white;
-  overflow: hidden;
 }
 
-/* Confetti Animation */
-.confetti {
+/* Balloons */
+.balloon {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background: gold;
-  animation: fall 4s linear infinite;
-  opacity: 0.8;
+  width: 60px;
+  height: 80px;
+  background: #ff5db1;
+  border-radius: 50%;
+  box-shadow: inset -10px -15px 30px rgba(0,0,0,0.2);
+  animation: float 6s infinite ease-in-out;
 }
 
-@keyframes fall {
-  0% { transform: translateY(-10vh) rotate(0deg); }
-  100% { transform: translateY(110vh) rotate(360deg); }
+.balloon::after {
+  content:"";
+  position:absolute;
+  width:3px;
+  height:50px;
+  background:white;
+  left:50%;
+  transform:translateX(-50%);
+  top:80px;
 }
 
-/* Main container */
+@keyframes float {
+  0% { transform: translateY(100vh); opacity: 1; }
+  50% { transform: translateY(40vh); }
+  100% { transform: translateY(-20vh); opacity: 0; }
+}
+
+/* Main Container */
 .container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
 }
 
-/* Glow text */
-.title {
-  font-size: 45px;
-  font-weight: bold;
-  text-shadow: 0px 0px 20px #ff9ad5, 0px 0px 40px #ff4ab0;
+/* Glow Name */
+.name {
+  font-size:40px;
+  font-weight:700;
+  color:#ff9ad9;
+  text-shadow:0 0 20px #ff4acb, 0 0 50px #ff0aa5;
   animation: glow 2s infinite alternate;
 }
 
 @keyframes glow {
-  from { text-shadow: 0 0 10px #ff70be; }
-  to { text-shadow: 0 0 40px #ff2fb1; }
+  0% { text-shadow: 0 0 15px #ff5dd9; }
+  100% { text-shadow: 0 0 45px #ff0ed2; }
 }
 
-/* Smooth typewriter birthday message */
-.typeText {
-  font-size: 22px;
-  width: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  border-right: 3px solid #ff2fb1;
-  margin-top: 15px;
-  animation: typing 5s steps(50, end) forwards, blink .7s infinite;
+/* SMOOTH TYPING TEXT */
+.typing {
+  font-size:22px;
+  height:30px;
+  margin-top:20px;
+  opacity:0;
+  animation: fadeIn .5s forwards 1s;
+  letter-spacing:1.5px;
 }
 
-@keyframes typing {
-  from { width: 0; }
-  to { width: 100%; }
+@keyframes fadeIn {
+  from {opacity:0;}
+  to {opacity:1;}
 }
 
-@keyframes blink {
-  50% { border-color: transparent; }
-}
-
-/* Balloon image */
+/* IMAGE */
 img {
-  width: 260px;
-  margin-top: 30px;
-  border-radius: 18px;
-  opacity: 0;
-  animation: pop 2s forwards 5.2s ease;
-  box-shadow: 0px 0px 25px #ff2fb1;
+  width:260px;
+  border-radius:15px;
+  margin-top:30px;
+  opacity:0;
+  animation: pop 2s forwards ease 4s;
+  box-shadow:0 0 40px #ff0095;
 }
 
 @keyframes pop {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  0% {transform:scale(0.6); opacity:0;}
+  100% {transform:scale(1); opacity:1;}
+}
+
+/* FINAL TEXT */
+.end {
+  font-size:24px;
+  margin-top:35px;
+  opacity:0;
+  font-weight:300;
+  animation: fadeLate 3s forwards ease 7s;
+}
+
+@keyframes fadeLate {
+  from{opacity:0;}
+  to{opacity:1;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- Confetti Script -->
-<script>
-for(let i=0; i<50; i++){
-  let confetti = document.createElement("div");
-  confetti.classList.add("confetti");
-  confetti.style.left = Math.random()*100 + "vw";
-  confetti.style.animationDuration = (3 + Math.random()*2) + "s";
-  confetti.style.background = ["#FF3EA5","#FFB700","#7C83FD","#FF5D73"][Math.floor(Math.random()*4)];
-  document.body.appendChild(confetti);
-}
-</script>
+<audio autoplay loop>
+<source src="https://files.catbox.moe/1kmb5v.mp3" type="audio/mpeg">
+</audio>
 
 <div class="container">
-  <div class="title">🎂 Happy Birthday, Pagliiiii 💗</div>
+  <div class="name">🎂 Happy Birthday Pagliiiii 💗</div>
+  <div id="typing" class="typing"></div>
 
-  <div class="typeText">
-    May your day be filled with love, laughter and everything you deserve ❤️✨
-  </div>
-
-  <img src="https://i.imgur.com/tXQnYqR.jpeg">
+  <img src="https://i.postimg.cc/XqMcsXB5/20250810-010709.png">
+  <div class="end">Thank you for being in my life 💕</div>
 </div>
+
+<script>
+// Smooth typing effect
+let text = "You deserve all the happiness and love today and always ❤️✨";
+let index = 0;
+let speed = 60;
+
+function typeSmooth(){
+  if(index < text.length){
+    document.getElementById("typing").innerHTML += text.charAt(index);
+    index++;
+    setTimeout(typeSmooth, speed);
+  }
+}
+
+setTimeout(typeSmooth, 1500);
+
+// Balloons
+for(let i=0;i<10;i++){
+  let b=document.createElement("div");
+  b.classList.add("balloon");
+  b.style.left=Math.random()*100+"vw";
+  b.style.animationDuration=(5+Math.random()*3)+"s";
+  b.style.background=["#ff3ea5","#ff6fb1","#ffa2d3","#ff4bb5"][Math.floor(Math.random()*4)];
+  document.body.appendChild(b);
+}
+</script>
 
 </body>
 </html>
