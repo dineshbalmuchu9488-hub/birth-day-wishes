@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday Pagliiii ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+       background: url('https://images.unsplash.com/photo-1519682337058-a94d519337bc?w=1920') center/cover no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        font-family: "Pacifico", cursive;
+        position: relative;
+    }
+
+    /* Soft dark edges like real letter */
+    body::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(rgba(0,0,0,0) 60%, rgba(0,0,0,0.4));
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+
+    .container {
+        text-align: center;
+        color: white;
+        text-shadow: 0 0 10px black;
+        opacity: 0;
+        animation: fadeIn 2s ease-in-out forwards;
+        z-index: 2;
+    }
+
+    @keyframes fadeIn { to { opacity: 1; } }
+
+    /* Birthday Text Stylish */
+    h1 {
+        font-size: 75px;
+        background: linear-gradient(45deg, #ff007c, #ff80c8, #ffcc00);
+        -webkit-background-clip: text;
+        color: transparent;
+        font-weight: bold;
+        text-shadow: 0 0 15px rgba(255,255,255,0.4);
+        animation: shine 3s infinite alternate ease-in-out, pop 2s infinite ease-in-out;
+    }
+
+    @keyframes shine {
+        0% { filter: brightness(0.8); }
+        100% { filter: brightness(2); }
+    }
+
+    @keyframes pop {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.12); }
+    }
+
+    /* Typing LOVE letter vibe */
+    #message {
+        font-size: 36px;
+        width: 85vw;
+        margin: 20px auto 0;
+        line-height: 1.6;
+        border-right: 4px solid rgba(255,255,255,0.8);
+        white-space: nowrap;
+        overflow: hidden;
+        animation: typing 10s steps(50), blink .6s infinite alternate;
+    }
+
+    @keyframes typing {
+        from { width: 0; }
