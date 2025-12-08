@@ -2,157 +2,172 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>🎂 Happy Birthday Pagliiiii ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday Pagliiii ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  background: linear-gradient(135deg,#16001c,#2b0033,#450046);
-  overflow: hidden;
-  font-family: "Poppins", sans-serif;
-  color: white;
-}
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        background: url('https://images.unsplash.com/photo-1505909182943-92ed89b6a5b4') no-repeat center center/cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        font-family: "Pacifico", cursive;
+    }
 
-/* Balloons */
-.balloon {
-  position: absolute;
-  width: 60px;
-  height: 80px;
-  background: #ff5db1;
-  border-radius: 50%;
-  box-shadow: inset -10px -15px 30px rgba(0,0,0,0.2);
-  animation: float 6s infinite ease-in-out;
-}
+    .container {
+        text-align: center;
+        color: white;
+        opacity: 0;
+        animation: fadeIn 2s ease-in-out forwards;
+    }
 
-.balloon::after {
-  content:"";
-  position:absolute;
-  width:3px;
-  height:50px;
-  background:white;
-  left:50%;
-  transform:translateX(-50%);
-  top:80px;
-}
-@keyframes float {
-  0% { transform: translateY(100vh); opacity: 1; }
-  50% { transform: translateY(40vh); }
-  100% { transform: translateY(-20vh); opacity: 0; }
-}
+    @keyframes fadeIn { to { opacity: 1; } }
 
-/* Main Container */
-.container {
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%);
-  text-align:center;
-}
+    h1 {
+        font-size: 60px;
+        text-shadow: 0 0 35px #ff007c, 0 0 60px #ff4da6;
+        animation: glow 2s alternate infinite ease-in-out;
+    }
 
-/* Glow Name */
-.name {
-  font-size:40px;
-  font-weight:700;
-  color:#ff9ad9;
-  text-shadow:0 0 20px #ff4acb, 0 0 50px #ff0aa5;
-  animation: glow 2s infinite alternate;
-}
+    @keyframes glow {
+        0% { text-shadow: 0 0 20px #ff66b3; }
+        100% { text-shadow: 0 0 50px #ff007c; }
+    }
 
-@keyframes glow {
-  0% { text-shadow: 0 0 15px #ff5dd9; }
-  100% { text-shadow: 0 0 45px #ff0ed2; }
-}
+    #message {
+        font-size: 30px;
+        width: 85vw;
+        margin: 20px auto 0;
+        line-height: 1.5;
+        text-shadow: 0 0 10px black;
+    }
 
-/* SMOOTH TYPING TEXT */
-.typing {
-  font-size:22px;
-  height:30px;
-  margin-top:20px;
-  opacity:0;
-  animation: fadeIn .5s forwards 1s;
-  letter-spacing:1.5px;
-}
+    button {
+        margin-top: 25px;
+        font-size: 24px;
+        padding: 12px 30px;
+        background: linear-gradient(45deg,#ff007c,#ffb3da);
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        color: white;
+        transition: .3s;
+        box-shadow: 0 0 20px #ff007c;
+    }
 
-@keyframes fadeIn {
-  from {opacity:0;}
-  to {opacity:1;}
-}
+    button:hover {
+        transform: scale(1.12);
+    }
 
-/* IMAGE */
-img {
-  width:260px;
-  border-radius:15px;
-  margin-top:30px;
-  opacity:0;
-  animation: pop 2s forwards ease 4s;
-  box-shadow:0 0 40px #ff0095;
-}
+    .heart, .rose {
+        position: absolute;
+        font-size: 30px;
+        animation: floatUp 5s linear infinite;
+        opacity: 0.8;
+    }
 
-@keyframes pop {
-  0% {transform:scale(0.6); opacity:0;}
-  100% {transform:scale(1); opacity:1;}
-}
+    @keyframes floatUp {
+        0% { transform: translateY(100vh); }
+        100% { transform: translateY(-10vh); opacity:0; }
+    }
 
-/* FINAL TEXT */
-.end {
-  font-size:24px;
-  margin-top:35px;
-  opacity:0;
-  font-weight:300;
-  animation: fadeLate 3s forwards ease 7s;
-}
+    /* Fireworks */
+    .firework {
+        position: fixed;
+        width: 6px;
+        height: 6px;
+        background: #fff;
+        border-radius: 50%;
+        animation: explode 1s ease-out forwards;
+    }
 
-@keyframes fadeLate {
-  from{opacity:0;}
-  to{opacity:1;}
-}
+    @keyframes explode {
+        0% { transform: scale(1); opacity:1; }
+        100% { transform: scale(20); opacity:0; }
+    }
+
+    .end {
+        margin-top: 25px;
+        font-size: 50px;
+        animation: beat 1.5s infinite alternate ease-in-out;
+        display: none;
+    }
+
+    @keyframes beat {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.2); }
+    }
+
 </style>
 </head>
 
 <body>
 
-<audio autoplay loop>
-<source src="https://files.catbox.moe/1kmb5v.mp3" type="audio/mpeg">
+<audio id="bgm" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6bda50d716.mp3" type="audio/mp3">
 </audio>
 
 <div class="container">
-  <div class="name">🎂 Happy Birthday Pagliiiii 💗</div>
-  <div id="typing" class="typing"></div>
-
-  <img src="https://i.postimg.cc/XqMcsXB5/20250810-010709.png">
-  <div class="end">Thank you for being in my life 💕</div>
+    <h1>🎂 Happy Birthday Pagliiii ❤️</h1>
+    <p id="message"></p>
+    <button onclick="start()">💗 Tap Here 💗</button>
+    <div id="end" class="end">❤️ I Love You Pagliiii ❤️</div>
 </div>
 
 <script>
-// Smooth typing effect
-let text = "You deserve all the happiness and love today and always ❤️✨";
-let index = 0;
-let speed = 60;
+const text = "Tum bahut special ho... aur aaj tumhara din hai. Mere liye tum muskaan ho, peace ho, aur meri sabse pyari pagal ho. I hope tumhari har wish puri ho... Happy Birthday pagliiii ❤️";
 
-function typeSmooth(){
-  if(index < text.length){
-    document.getElementById("typing").innerHTML += text.charAt(index);
-    index++;
-    setTimeout(typeSmooth, speed);
-  }
+let index = 0;
+function typeMessage() {
+    if (index < text.length) {
+        document.getElementById("message").innerHTML += text.charAt(index);
+        index++;
+        setTimeout(typeMessage, 50);
+    }
 }
 
-setTimeout(typeSmooth, 1500);
+function rain() {
+    setInterval(() => {
+        const rose = document.createElement("div");
+        rose.innerHTML = Math.random() > .5 ? "❤️" : "🌹";
+        rose.classList.add("rose");
+        rose.style.left = Math.random() * 100 + "vw";
+        rose.style.fontSize = Math.random() * 20 + 25 + "px";
+        document.body.appendChild(rose);
+        setTimeout(() => rose.remove(), 4000);
+    }, 600);
+}
 
-// Balloons
-for(let i=0;i<10;i++){
-  let b=document.createElement("div");
-  b.classList.add("balloon");
-  b.style.left=Math.random()*100+"vw";
-  b.style.animationDuration=(5+Math.random()*3)+"s";
-  b.style.background=["#ff3ea5","#ff6fb1","#ffa2d3","#ff4bb5"][Math.floor(Math.random()*4)];
-  document.body.appendChild(b);
+function fireworks() {
+    for(let i = 0; i < 20; i++){
+        const fw = document.createElement("div");
+        fw.classList.add("firework");
+        fw.style.left = Math.random() * 100 + "vw";
+        fw.style.top = Math.random() * 100 + "vh";
+        document.body.appendChild(fw);
+        setTimeout(() => fw.remove(), 1000);
+    }
+}
+
+function start(){
+    document.getElementById("bgm").play();
+    typeMessage();
+    rain();
+    fireworks();
+    
+    setTimeout(()=> document.getElementById("end").style.display="block", 7000);
 }
 </script>
 
 </body>
 </html>
+
 
 
 
