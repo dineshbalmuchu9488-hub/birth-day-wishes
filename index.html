@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Fireworks Surprise</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif;}
+body{
+    height:100vh;background:#000;color:white;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;
+    text-align:center;
+}
+.btn{
+    padding:14px 28px;background:#ff3377;color:#fff;border-radius:10px;
+    font-size:20px;cursor:pointer;transition:.3s;
+}
+.btn:hover{transform:scale(1.1);background:#ff0055;}
+.letter{
+    width:330px;background:white;color:black;padding:20px;border-radius:12px;
+    margin-top:20px;display:none;line-height:26px;box-shadow:0 0 20px rgba(255,255,255,0.5);
+}
+#fireCanvas{
+    position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;
+}
+#balloons{position:fixed;width:100%;height:100%;top:0;left:0;pointer-events:none;}
+.balloon{
+    width:60px;height:80px;border-radius:50%;position:absolute;bottom:-150px;
+    animation:fly 7s linear infinite;
+}
+@keyframes fly{to{transform:translateY(-120vh);}}
+</style>
+</head>
+
+<body>
+
+<h2 style="font-size:32px;margin-bottom:15px;">🎉 Tap to Open Surprise 🎉</h2>
+<div class="btn" onclick="startShow()">Open 💝</div>
+
+<div class="letter" id="letter">
+    <p id="msg"></p>
+</div>
+
+<canvas id="fireCanvas"></canvas>
+<audio id="music" preload="auto" loop src="https://files.catbox.moe/f6o9vc.mp3"></audio>
+
+<div id="balloons"></div>
+
+<script>
+function startShow(){
+    let blast=document.getElementById("blast");
+    let music=document.getElementById("music");
+    blast.currentTime=0; blast.play().catch(()=>{});
+    setTimeout(()=>music.play().catch(()=>{}),300);
+    showMessage(); releaseBalloons();
+}
+
+function showMessage(){
+    document.getElementById("letter").style.display="block";
+    let txt="Happy Birthday Pagliiii ❤️🎉\n\nTumhari smile sabse pyaari hai,\nAaj ka din tumhare liye special hai.\n\nHamesha khush raho, muskurati raho,\nAur apne saare sapne poore karo. 💫";
+    let i=0;
+    function type(){ if(i<txt.length){document.getElementById("msg").innerHTML+=txt[i];i++;setTimeout(type,35);} }
+    type();
+}
+
+function releaseBalloons(){
+    let colors=["#ff4757","#ffa502","#1e90ff","#2ed573","#e056fd"];
+    for(let i=0;i<20;i++){
+        let b=document.createElement("div");
+        b.className="balloon";
+        b.style.left=Math.random()*100+"vw";
+        b.style.background=colors[Math.floor(Math.random()*colors.length)];
+        b.style.animationDuration=(4+Math.random()*3)+"s";
+        document.getElementById("balloons").appendChild(b);
+    }
+}
+
+const c=document.getElementById("fireCanvas");const x=c.getContext("2d");
+c.width=innerWidth;c.height=innerHeight;let fw=[];
+class Firework{
+    constructor(){
+        this.x=Math.random()*c.width;this.y=c.height;
+        this.ty=Math.random()*c.height/2;this.speed=4;
+        this.color=`hsl(${Math.random()*360},100%,60%)`;
+        this.p=[];this.ex=false;
+    }
+    update(){if(!this.ex){this.y-=this.speed;if(this.y<=this.ty){this.explode();this.ex=true;}}
+        this.p.forEach(p=>p.update());
+    }
+    explode(){for(let i=0;i<50;i++){this.p.push(new Particle(this.x,this.y,this.color));}}
+    draw(){if(!this.ex){x.fillStyle=this.color;x.beginPath();x.arc(this.x,this.y,4,0,Math.PI*2);x.fill();}
+        this.p.forEach(p=>p.draw());
+    }
+}
+class Particle{
+    constructor(a,b,c){this.x=a;this.y=b;this.c=c;
+        this.angle=Math.random()*2*Math.PI;
+        this.speed=Math.random()*4+2;this.l=0;this.ml=60;
+    }
+    update(){this.l++;this.x+=Math.cos(this.angle)*this.speed;this.y+=Math.sin(this.angle)*this.speed;}
+    draw(){if(this.l<this.ml){x.globalAlpha=1-this.l/this.ml;x.fillStyle=this.c;x.fillRect(this.x,this.y,4,4);x.globalAlpha=1;}}
+}
+function loop(){
+    x.fillStyle="rgba(0,0,0,0.2)";
+    x.fillRect(0,0,c.width,c.height);
+    if(Math.random()<0.06)fw.push(new Firework());
+    fw.forEach((f,i)=>{f.update();f.draw();
+        if(f.ex && f.p.every(p=>p.l>=p.ml)){fw.splice(i,1);}
+    });
+    requestAnimationFrame(loop);
+}
+loop();
+</script>
+
+</body>
+</html>
