@@ -12,18 +12,43 @@ body{
     display:flex;flex-direction:column;justify-content:center;align-items:center;
     text-align:center;
 }
+
+/* Fade Slideshow */
+.slideshow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -2;
+    overflow: hidden;
+}
+
+.slideshow img {
+    position: absolute;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+/* Button */
 .btn{
     padding:14px 28px;background:#ff3377;color:#fff;border-radius:10px;
     font-size:20px;cursor:pointer;transition:.3s;
 }
 .btn:hover{transform:scale(1.1);background:#ff0055;}
+
+/* Surprise Letter */
 .letter{
     width:330px;background:white;color:black;padding:20px;border-radius:12px;
     margin-top:20px;display:none;line-height:26px;box-shadow:0 0 20px rgba(255,255,255,0.5);
 }
+
+/* Fireworks Canvas */
 #fireCanvas{
     position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;
 }
+
+/* Balloons */
 #balloons{position:fixed;width:100%;height:100%;top:0;left:0;pointer-events:none;}
 .balloon{
     width:60px;height:80px;border-radius:50%;position:absolute;bottom:-150px;
@@ -35,6 +60,13 @@ body{
 
 <body>
 
+<!-- FADE SLIDESHOW -->
+<div class="slideshow" id="slideshow">
+    <img src="https://i.imgur.com/9QxQK8d.jpeg">
+    <img src="https://i.imgur.com/2bY4qvU.jpeg">
+    <img src="https://i.imgur.com/qe7GQd7.jpeg">
+</div>
+
 <h2 style="font-size:32px;margin-bottom:15px;">🎉 Tap to Open Surprise 🎉</h2>
 <div class="btn" onclick="startShow()">Open 💝</div>
 
@@ -42,28 +74,54 @@ body{
     <p id="msg"></p>
 </div>
 
+<!-- Fireworks Canvas -->
 <canvas id="fireCanvas"></canvas>
-<audio id="music" preload="auto" loop src="https://files.catbox.moe/f6o9vc.mp3"></audio>
 
+<!-- Sounds -->
+<audio id="blast" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2561/2561-preview.mp3"></audio>
+<audio id="music" preload="auto" loop src=https://files.catbox.moe/f6o9vc.mp3""></audio>
+
+<!-- Balloons -->
 <div id="balloons"></div>
 
 <script>
+/* TAP FUNCTION */
 function startShow(){
     let blast=document.getElementById("blast");
     let music=document.getElementById("music");
-    blast.currentTime=0; blast.play().catch(()=>{});
+
+    blast.currentTime=0; 
+    blast.play().catch(()=>{});
+
     setTimeout(()=>music.play().catch(()=>{}),300);
-    showMessage(); releaseBalloons();
+
+    showMessage();
+    releaseBalloons();
 }
 
+/* TYPEWRITER MESSAGE */
 function showMessage(){
     document.getElementById("letter").style.display="block";
-    let txt="Happy Birthday Pagliiii ❤️🎉\n\nTumhari smile sabse pyaari hai,\nAaj ka din tumhare liye special hai.\n\nHamesha khush raho, muskurati raho,\nAur apne saare sapne poore karo. 💫";
+
+    let txt =
+        "Happy Birthday Pagliiii ❤️🎉\n\n"+
+        "Tumhari smile sabse pyaari hai,\n"+
+        "Aaj ka din tumhare liye special hai.\n\n"+
+        "Hamesha khush raho, muskurati raho,\n"+
+        "Aur apne saare sapne poore karo. 💫";
+
     let i=0;
-    function type(){ if(i<txt.length){document.getElementById("msg").innerHTML+=txt[i];i++;setTimeout(type,35);} }
+    function type(){
+        if(i < txt.length){
+            document.getElementById("msg").innerHTML += txt[i];
+            i++;
+            setTimeout(type,35);
+        }
+    }
     type();
 }
 
+/* BALLOONS */
 function releaseBalloons(){
     let colors=["#ff4757","#ffa502","#1e90ff","#2ed573","#e056fd"];
     for(let i=0;i<20;i++){
@@ -76,42 +134,98 @@ function releaseBalloons(){
     }
 }
 
-const c=document.getElementById("fireCanvas");const x=c.getContext("2d");
-c.width=innerWidth;c.height=innerHeight;let fw=[];
+/* FADE SLIDESHOW JS */
+let slideIndex=0;
+const slides=document.querySelectorAll(".slideshow img");
+
+function showSlides(){
+    slides.forEach(img => img.style.opacity=0);
+    slides[slideIndex].style.opacity=1;
+
+    slideIndex = (slideIndex + 1) % slides.length;
+}
+setInterval(showSlides, 3000);
+showSlides();
+
+/* FIREWORKS ENGINE */
+const c=document.getElementById("fireCanvas");
+const x=c.getContext("2d");
+c.width=innerWidth;
+c.height=innerHeight;
+
+let fw=[];
+
 class Firework{
-    constructor(){
-        this.x=Math.random()*c.width;this.y=c.height;
-        this.ty=Math.random()*c.height/2;this.speed=4;
-        this.color=`hsl(${Math.random()*360},100%,60%)`;
-        this.p=[];this.ex=false;
+  constructor(){
+    this.x=Math.random()*c.width;
+    this.y=c.height;
+    this.ty=Math.random()*c.height/2;
+    this.speed=4;
+    this.color=`hsl(${Math.random()*360},100%,60%)`;
+    this.p=[];
+    this.ex=false;
+  }
+  update(){
+    if(!this.ex){
+      this.y-=this.speed;
+      if(this.y<=this.ty){this.explode();this.ex=true;}
     }
-    update(){if(!this.ex){this.y-=this.speed;if(this.y<=this.ty){this.explode();this.ex=true;}}
-        this.p.forEach(p=>p.update());
+    this.p.forEach(p=>p.update());
+  }
+  explode(){
+    for(let i=0;i<50;i++){
+      this.p.push(new Particle(this.x,this.y,this.color));
     }
-    explode(){for(let i=0;i<50;i++){this.p.push(new Particle(this.x,this.y,this.color));}}
-    draw(){if(!this.ex){x.fillStyle=this.color;x.beginPath();x.arc(this.x,this.y,4,0,Math.PI*2);x.fill();}
-        this.p.forEach(p=>p.draw());
+  }
+  draw(){
+    if(!this.ex){
+      x.fillStyle=this.color;
+      x.beginPath();
+      x.arc(this.x,this.y,4,0,Math.PI*2);
+      x.fill();
     }
+    this.p.forEach(p=>p.draw());
+  }
 }
+
 class Particle{
-    constructor(a,b,c){this.x=a;this.y=b;this.c=c;
-        this.angle=Math.random()*2*Math.PI;
-        this.speed=Math.random()*4+2;this.l=0;this.ml=60;
+  constructor(a,b,c){
+    this.x=a;this.y=b;this.c=c;
+    this.angle=Math.random()*2*Math.PI;
+    this.speed=Math.random()*4+2;
+    this.l=0;this.ml=60;
+  }
+  update(){
+    this.l++;
+    this.x+=Math.cos(this.angle)*this.speed;
+    this.y+=Math.sin(this.angle)*this.speed;
+  }
+  draw(){
+    if(this.l<this.ml){
+      x.globalAlpha=1-this.l/this.ml;
+      x.fillStyle=this.c;
+      x.fillRect(this.x,this.y,4,4);
+      x.globalAlpha=1;
     }
-    update(){this.l++;this.x+=Math.cos(this.angle)*this.speed;this.y+=Math.sin(this.angle)*this.speed;}
-    draw(){if(this.l<this.ml){x.globalAlpha=1-this.l/this.ml;x.fillStyle=this.c;x.fillRect(this.x,this.y,4,4);x.globalAlpha=1;}}
+  }
 }
+
 function loop(){
-    x.fillStyle="rgba(0,0,0,0.2)";
-    x.fillRect(0,0,c.width,c.height);
-    if(Math.random()<0.06)fw.push(new Firework());
-    fw.forEach((f,i)=>{f.update();f.draw();
-        if(f.ex && f.p.every(p=>p.l>=p.ml)){fw.splice(i,1);}
-    });
-    requestAnimationFrame(loop);
+  x.fillStyle="rgba(0,0,0,0.3)";
+  x.fillRect(0,0,c.width,c.height);
+
+  if(Math.random()<0.06) fw.push(new Firework());
+
+  fw.forEach((f,i)=>{
+    f.update(); f.draw();
+    if(f.ex && f.p.every(p=>p.l>=p.ml)) fw.splice(i,1);
+  });
+
+  requestAnimationFrame(loop);
 }
 loop();
 </script>
 
 </body>
 </html>
+
