@@ -1,152 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Birthday Paglii</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Paglii 💖</title>
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-            font-family: "Poppins", sans-serif;
-            text-align: center;
-            overflow: hidden;
-            height: 100vh;
-        }
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #ffb3c6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+    }
 
-        /* --- FIRST SCREEN (Tap to Start) --- */
-        #startScreen {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 30px;
-            animation: fadeIn 1.5s ease;
-        }
+    /* First TAP Screen */
+    #tapScreen {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #ffb3c6;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #ffffff;
+        letter-spacing: 2px;
+        animation: pulse 1.5s infinite;
+    }
 
-        .tap-btn {
-            margin-top: 20px;
-            background: white;
-            color: #ff4c79;
-            padding: 12px 25px;
-            border-radius: 12px;
-            font-size: 20px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
+    @keyframes pulse {
+        0% { opacity: 0.5; }
+        100% { opacity: 1; }
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+    /* Birthday Message Box */
+    #wishBox {
+        opacity: 0;
+        transform: scale(0.5);
+        transition: 0.8s;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 30px;
+        border-radius: 20px;
+        backdrop-filter: blur(8px);
+        font-size: 24px;
+        width: 320px;
+    }
 
-        /* --- BIRTHDAY SCREEN --- */
-        #birthdayScreen {
-            display: none;
-            position: absolute;
-            inset: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    #wishBox.visible {
+        opacity: 1;
+        transform: scale(1);
+    }
 
-        .card {
-            background: rgba(255, 255, 255, 0.25);
-            padding: 40px 30px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
-            animation: scaleUp 1.2s ease;
-        }
-
-        @keyframes scaleUp {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        h1 {
-            font-size: 40px;
-            color: white;
-            text-shadow: 0 0 10px rgba(255,255,255,0.6);
-        }
-
-        p {
-            font-size: 20px;
-            color: #fff;
-            margin-top: 10px;
-        }
-
-        /* Hearts */
-        .heart {
-            position: absolute;
-            color: #ff3366;
-            font-size: 25px;
-            animation: floatUp 4s linear infinite;
-            opacity: 0;
-        }
-
-        @keyframes floatUp {
-            0% { transform: translateY(20px); opacity: 1; }
-            100% { transform: translateY(-150vh); opacity: 0; }
-        }
-    </style>
+</style>
 </head>
 <body>
 
-    <!-- Background Music -->
-    <audio id="bgMusic" loop>
-        <source src="https://files.catbox.moe/f6o9vc.mp3">
-    </audio>
+<div id="tapScreen">Tap to Start 🎀</div>
 
-    <!-- FIRST SCREEN -->
-    <div id="startScreen">
-        <div>🎉 Welcome 🎉</div>
-        <button class="tap-btn" onclick="startBirthday()">Tap to Continue</button>
-    </div>
+<div id="wishBox">
+    <h2>💖 Happy Birthday Paglii! 💖</h2>
+    <p>Wishing you a magical and beautiful day! 🦋✨</p>
+</div>
 
-    <!-- BIRTHDAY SCREEN -->
-    <div id="birthdayScreen">
-        <div class="card">
-            <h1>💖 Happy Birthday Paglii 💖</h1>
-            <p>Wishing you a magical and beautiful day! 🎀✨</p>
-        </div>
-    </div>
+<audio id="bgMusic" src="https://files.catbox.moe/f6o9vc.mp3"></audio>
 
-    <script>
-        function startBirthday() {
-            // Hide first screen
-            document.getElementById("startScreen").style.display = "none";
-            
-            // Show birthday screen
-            document.getElementById("birthdayScreen").style.display = "flex";
+<script>
+    const tap = document.getElementById("tapScreen");
+    const box = document.getElementById("wishBox");
+    const music = document.getElementById("bgMusic");
 
-            // Play music
-            document.getElementById("bgMusic").play();
+    tap.addEventListener("click", () => {
+        tap.style.display = "none";     
+        box.classList.add("visible");
 
-            // Start hearts animation
-            setInterval(createHeart, 300);
-        }
-
-        function createHeart() {
-            const heart = document.createElement("div");
-            heart.classList.add("heart");
-            heart.innerHTML = "❤";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (3 + Math.random() * 2) + "s";
-            document.body.appendChild(heart);
-
-            setTimeout(() => heart.remove(), 5000);
-        }
-    </script>
+        // Music play after user tap
+        music.play().catch(e => console.log("Autoplay blocked:", e));
+    });
+</script>
 
 </body>
 </html>
+
 
 
 
