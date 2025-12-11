@@ -10,15 +10,12 @@
         margin: 0;
         padding: 0;
         background: #ff9ab2;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        font-family: Arial, sans-serif;
+        overflow: hidden;
+        font-family: 'Poppins', sans-serif;
     }
 
-    /* TAP TO START SCREEN */
-    #startScreen {
+    /* TAP SCREEN */
+    #tapScreen {
         position: fixed;
         top: 0; left: 0;
         width: 100%;
@@ -27,59 +24,107 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        color: white;
-        font-size: 30px;
+        font-size: 32px;
         font-weight: bold;
+        color: #fff;
         cursor: pointer;
-        z-index: 10;
-        animation: blink 1.2s infinite;
+        z-index: 20;
+        animation: blink 1.3s infinite;
     }
 
     @keyframes blink {
-        0% { opacity: 0.5; }
-        100% { opacity: 1; }
+        0% {opacity: 0.5;}
+        100% {opacity: 1;}
     }
 
-    /* BIRTHDAY MESSAGE */
-    #messageBox {
-        opacity: 0;
-        transform: scale(0.6);
-        transition: 0.8s ease;
+    /* LETTER DESIGN BOX */
+    #letterBox {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%) scale(0.5);
+        width: 380px;
+        padding: 40px;
         background: rgba(255,255,255,0.7);
-        backdrop-filter: blur(10px);
-        padding: 25px;
-        border-radius: 20px;
+        backdrop-filter: blur(12px);
+        border-radius: 25px;
         text-align: center;
-        width: 320px;
+        opacity: 0;
+        transition: 1s ease;
+        box-shadow: 0px 10px 25px rgba(0,0,0,0.15);
     }
 
-    #messageBox.show {
+    #letterBox.show {
         opacity: 1;
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    h2 {
+        margin-top: 0;
+        color: #ff2d55;
+        font-size: 28px;
+    }
+
+    /* FLOATING HEARTS */
+    .heart {
+        position: fixed;
+        bottom: -20px;
+        font-size: 22px;
+        animation: floatUp 5s linear infinite;
+        opacity: 0.8;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(-120vh); opacity: 0; }
     }
 </style>
 </head>
 <body>
 
-<div id="startScreen">Tap to Start 🎀</div>
+<!-- Tap Screen -->
+<div id="tapScreen">Tap to Start 🎀</div>
 
-<div id="messageBox">
+<!-- Letter Design Birthday Box -->
+<div id="letterBox">
     <h2>💖 Happy Birthday Pagliii 💖</h2>
-    <p>You are special… Have the most magical day! ✨🦋</p>
+    <p style="font-size:18px; color:#444;">
+        You make the world brighter…  
+        Wishing you the most magical and beautiful day! ✨🌸
+    </p>
 </div>
 
+<!-- Music -->
 <audio id="music" src="https://files.catbox.moe/f6o9vc.mp3"></audio>
 
 <script>
-    const start = document.getElementById("startScreen");
-    const msg = document.getElementById("messageBox");
+    const tap = document.getElementById("tapScreen");
+    const box = document.getElementById("letterBox");
     const music = document.getElementById("music");
 
-    start.addEventListener("click", function () {
-        start.style.display = "none";      // TAP hides first screen
-        msg.classList.add("show");         // Show message
-        music.play().catch(()=>{});        // Play sound
-    });
+    tap.onclick = () => {
+        tap.style.display = "none";
+        box.classList.add("show");
+        music.play().catch(()=>{});
+
+        startHearts();
+    }
+
+    // HEART ANIMATION
+    function startHearts() {
+        setInterval(() => {
+            let heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = "💖";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = 3 + Math.random()*3 + "s";
+            heart.style.fontSize = (20 + Math.random()*15) + "px";
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 6000);
+        }, 400);
+    }
 </script>
 
 </body>
