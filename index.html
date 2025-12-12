@@ -13,9 +13,6 @@
         overflow-x: hidden;
         text-align: center;
     }
-.cake-animate {
-    animation: fadeZoom 1.8s ease-out forwards;
-}
 
 @keyframes fadeZoom {
     0% { opacity: 0; transform: scale(0.5); }
@@ -73,6 +70,14 @@
         border-radius: 15px;
         filter: drop-shadow(0px 4px 12px rgba(0,0,0,0.3));
     }
+.cake-animate {
+    animation: fadeZoom 1.8s ease-out forwards;
+}
+
+@keyframes fadeZoom {
+    0% { opacity: 0; transform: scale(0.5); }
+    100% { opacity: 1; transform: scale(1); }
+}
 
     /* LETTER */
     .letter-box {
@@ -111,7 +116,6 @@
         heart.textContent = "💖";
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.fontSize = (20 + Math.random() * 22) + "px";
-
         document.body.appendChild(heart);
 
         setTimeout(() => heart.remove(), 7000);
@@ -127,9 +131,10 @@
 </div>
 
 <!-- CAKE IMAGE (100% guaranteed visible) -->
-<div class="cake-box">
+<div class="cake-animate">
     <img src=https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/red-birthday-cake-png-5.png
 "" alt="Birthday Cake">
+  style="width:260px;">
 </div>
 
 <!-- LETTER -->
@@ -144,6 +149,7 @@
 
 </body>
 </html>
+
 
 
 
