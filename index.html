@@ -14,11 +14,10 @@
         text-align: center;
     }
 
-    /* TAP TO START SCREEN */
+    /* TAP SCREEN */
     #tapScreen {
         position: fixed;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
+        inset: 0;
         background: #ff7eb3;
         display: flex;
         justify-content: center;
@@ -26,117 +25,109 @@
         flex-direction: column;
         color: white;
         font-size: 32px;
-        z-index: 10000;
-        animation: fadeIn 1s ease-in-out;
+        z-index: 9999;
     }
 
-    /* Floating Hearts */
+    /* HEART ANIMATION (FULL TOP HEIGHT) */
     .heart {
-        position: absolute;
-        animation: floatUp 7s linear infinite;
-        opacity: 0.8;
-        font-size: 22px;
+        position: fixed;
+        bottom: -50px;
+        animation: floatUp 7s linear forwards;
+        pointer-events: none;
+        opacity: 0.9;
     }
 
     @keyframes floatUp {
-        0% { transform: translateY(100vh); opacity: 1; }
-        100% { transform: translateY(-10vh); opacity: 0; }
+        0% { transform: translateY(0) scale(1); opacity: 1; }
+        100% { transform: translateY(-150vh) scale(1.5); opacity: 0; }
     }
 
-    /* Card Top */
+    /* CARD */
     .card {
         background: #ffe1ef;
         padding: 25px;
         width: 85%;
-        margin: 30px auto 10px auto;
+        margin: 25px auto 10px auto;
         border-radius: 15px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        animation: fadeIn 1.2s ease-in-out;
     }
 
-    /* Cake Image */
+    /* CAKE */
     .cake-box {
         margin-top: 20px;
-        animation: pop 1.2s ease-out;
     }
+
     .cake-box img {
         width: 260px;
         border-radius: 15px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     }
 
-    @keyframes pop {
-        from { transform: scale(0); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
-    }
-
-    /* Letter Box */
+    /* LETTER */
     .letter-box {
         background: #fff0f7;
+        padding: 20px;
         width: 85%;
-        padding: 22px;
         margin: 25px auto 40px auto;
         border-radius: 15px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        animation: fadeIn 1.6s ease-in-out;
     }
 
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
 </style>
 </head>
 
 <body>
 
-<!-- Tap to Start Screen -->
+<!-- TAP TO START -->
 <div id="tapScreen">💖 Tap to Start 💖</div>
 
-<!-- Background Music -->
+<!-- MUSIC -->
 <audio id="bgmusic" src="https://files.catbox.moe/f6o9vc.mp3"></audio>
 
 <script>
-    // Tap to Start → Play Music
     const tapScreen = document.getElementById("tapScreen");
     const music = document.getElementById("bgmusic");
 
     tapScreen.addEventListener("click", () => {
         music.play();
-        tapScreen.style.display = "none";
+        tapScreen.remove();
     });
 
-    // Floating Hearts Generator
-    setInterval(() => {
+    /* HEART GENERATOR - SMOOTH + FULL HEIGHT */
+    function createHeart() {
         const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.innerHTML = "💖";
+        heart.className = "heart";
+        heart.textContent = "💖";
+
         heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (20 + Math.random() * 20) + "px";
+        heart.style.fontSize = (20 + Math.random() * 22) + "px";
+
         document.body.appendChild(heart);
 
         setTimeout(() => heart.remove(), 7000);
-    }, 400);
+    }
+
+    setInterval(createHeart, 350);
 </script>
 
-<!-- Birthday Card -->
+<!-- MAIN CARD -->
 <div class="card">
     <h1>💖 Happy Birthday Pagliii 💖</h1>
     <p>You make the world brighter… Wishing you the most magical and beautiful day! ✨🌸</p>
 </div>
 
-<!-- Cake Image -->
+<!-- CAKE IMAGE (Always loads) -->
 <div class="cake-box">
-    <img src="https://i.imgur.com/8yKp8dS.png" alt="Birthday Cake">
+    <img src="https://i.imgur.com/0fUPB5K.png" alt="Birthday Cake">
 </div>
 
-<!-- Letter Box -->
+<!-- LETTER -->
 <div class="letter-box">
     <h2>💌 A Special Letter For You 💌</h2>
     <p>
         Thank you for being such a sweet part of my life…  
-        You deserve all the happiness, love, magic, and smiles in the world.  
-        Stay blessed, stay happy, and keep shining Pagliii… 🎀✨  
+        You deserve all the happiness, magic and smiles.  
+        Stay happy always Pagliii… 🎀✨  
     </p>
 </div>
 
