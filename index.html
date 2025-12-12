@@ -28,7 +28,7 @@
         z-index: 9999;
     }
 
-    /* HEART ANIMATION (FULL TOP HEIGHT) */
+    /* HEART ANIMATION */
     .heart {
         position: fixed;
         bottom: -50px;
@@ -52,15 +52,18 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    /* CAKE */
+    /* CAKE IMAGE */
     .cake-box {
         margin-top: 20px;
     }
 
     .cake-box img {
-        width: 260px;
+        width: 280px;
+        max-width: 90%;
+        display: block;
+        margin: auto;
         border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        filter: drop-shadow(0px 4px 12px rgba(0,0,0,0.3));
     }
 
     /* LETTER */
@@ -93,12 +96,11 @@
         tapScreen.remove();
     });
 
-    /* HEART GENERATOR - SMOOTH + FULL HEIGHT */
+    /* HEART GENERATOR */
     function createHeart() {
         const heart = document.createElement("div");
         heart.className = "heart";
         heart.textContent = "💖";
-
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.fontSize = (20 + Math.random() * 22) + "px";
 
@@ -116,9 +118,9 @@
     <p>You make the world brighter… Wishing you the most magical and beautiful day! ✨🌸</p>
 </div>
 
-<!-- CAKE IMAGE -->
+<!-- CAKE IMAGE (100% guaranteed visible) -->
 <div class="cake-box">
-    <img src="https://i.imgur.com/5L2vF7A.png" alt="Birthday Cake">
+    <img src="https://i.imgur.com/t7uQzT3.png" alt="Birthday Cake">
 </div>
 
 <!-- LETTER -->
@@ -133,4 +135,3 @@
 
 </body>
 </html>
-
