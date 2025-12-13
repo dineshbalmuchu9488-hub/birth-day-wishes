@@ -2,29 +2,61 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Birthday Wish</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Happy Birthday Pagliiii</title>
 
 <style>
-/* ===== RESET ===== */
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color:transparent;
 }
 
-/* ===== BODY ===== */
+/* ===== BACKGROUND SKY ===== */
 body{
-  height:100vh;
   width:100vw;
+  height:100vh;
   overflow:hidden;
-  background: linear-gradient(135deg,#ff758c,#ff7eb3);
-  font-family: 'Segoe UI', sans-serif;
+  font-family:'Segoe UI',sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(circle at top,#1c2a3a,#06080d 60%,#000);
+}
+
+/* ===== STAR LAYERS ===== */
+.stars,.stars2{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+
+.stars{
+  background-image:
+    radial-gradient(1px 1px at 20px 30px,#fff,transparent),
+    radial-gradient(1px 1px at 120px 80px,#bbb,transparent),
+    radial-gradient(1px 1px at 200px 160px,#fff,transparent),
+    radial-gradient(1px 1px at 300px 220px,#aaa,transparent);
+  animation:moveStars 120s linear infinite;
+}
+
+.stars2{
+  background-image:
+    radial-gradient(2px 2px at 60px 100px,#fff,transparent),
+    radial-gradient(2px 2px at 180px 160px,#ccc,transparent),
+    radial-gradient(2px 2px at 260px 60px,#ddd,transparent);
+  animation:moveStars 180s linear infinite;
+  opacity:.6;
+}
+
+@keyframes moveStars{
+  from{background-position:0 0;}
+  to{background-position:-2000px 1000px;}
 }
 
 /* ===== TAP SCREEN ===== */
-#startScreen{
+#start{
   position:fixed;
   inset:0;
   background:#000;
@@ -34,88 +66,120 @@ body{
   z-index:10;
 }
 
-#startScreen span{
-  color:#fff;
-  font-size:26px;
-  animation:pulse 1.5s infinite;
+#start span{
+  font-size:24px;
+  letter-spacing:3px;
+  color:#aaa;
+  animation:pulse 1.6s infinite;
 }
 
 @keyframes pulse{
-  0%{opacity:.4;}
-  50%{opacity:1;}
-  100%{opacity:.4;}
+  0%{opacity:.3}
+  50%{opacity:1}
+  100%{opacity:.3}
+}
+
+/* ===== OVERLAY ===== */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(0,0,0,.85),
+    rgba(0,0,0,.25),
+    rgba(0,0,0,.9)
+  );
+  pointer-events:none;
 }
 
 /* ===== MAIN CONTENT ===== */
 #main{
-  position:absolute;
+  position:fixed;
   inset:0;
-  display:flex;
+  display:none;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
-  color:#fff;
+  z-index:3;
   padding:20px;
 }
 
-/* TEXT ANIMATION */
+/* ===== TEXT ===== */
 .title{
-  font-size:40px;
-  font-weight:700;
-  animation:fadeZoom 1.8s ease forwards;
+  font-size:42px;
+  letter-spacing:4px;
+  opacity:0;
+  animation:titleIn 2.6s ease forwards;
+  text-shadow:
+    0 0 14px rgba(255,255,255,.25),
+    0 0 45px rgba(180,220,255,.2);
 }
 
 .subtitle{
-  margin-top:15px;
+  margin-top:18px;
   font-size:18px;
+  letter-spacing:1px;
+  color:#b9c9d8;
   opacity:0;
-  animation:fadeUp 1.5s ease forwards;
-  animation-delay:1.2s;
+  animation:subIn 2s ease forwards;
+  animation-delay:1.6s;
 }
 
-@keyframes fadeZoom{
-  from{opacity:0; transform:scale(.6);}
-  to{opacity:1; transform:scale(1);}
+@keyframes titleIn{
+  from{
+    opacity:0;
+    transform:translateY(40px) scale(.96);
+    filter:blur(6px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+    filter:blur(0);
+  }
 }
 
-@keyframes fadeUp{
-  from{opacity:0; transform:translateY(25px);}
+@keyframes subIn{
+  from{opacity:0; transform:translateY(20px);}
   to{opacity:1; transform:translateY(0);}
 }
 
-/* ===== HEARTS ===== */
-.heart{
+/* ===== FLOATING DUST ===== */
+.particle{
   position:fixed;
-  bottom:-20px;
-  animation:floatUp linear forwards;
-  pointer-events:none;
+  bottom:-10px;
+  width:2px;
+  height:2px;
+  background:rgba(255,255,255,.8);
+  box-shadow:0 0 8px rgba(200,220,255,.8);
+  animation:float linear forwards;
 }
 
-@keyframes floatUp{
-  from{
-    transform:translateY(0);
-    opacity:1;
-  }
-  to{
-    transform:translateY(-110vh);
-    opacity:0;
-  }
+@keyframes float{
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-120vh);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
-<!-- TAP SCREEN -->
-<div id="startScreen">
-  <span>Tap to Start ❤️</span>
+<div class="stars"></div>
+<div class="stars2"></div>
+
+<!-- TAP -->
+<div id="start">
+  <span>TAP TO START</span>
 </div>
 
+<div class="overlay"></div>
+
 <!-- MAIN -->
-<div id="main" style="display:none;">
-  <div class="title">Happy Birthday Pagliiii 💖</div>
-  <div class="subtitle">May your life be filled with love & smiles ✨</div>
+<div id="main">
+  <div class="title">HAPPY BIRTHDAY PAGLIIII 💖</div>
+  <div class="subtitle">
+    Under the same sky, you make every moment special ✨
+  </div>
 </div>
 
 <!-- MUSIC -->
@@ -124,30 +188,26 @@ body{
 </audio>
 
 <script>
-const startScreen = document.getElementById("startScreen");
-const main = document.getElementById("main");
-const music = document.getElementById("music");
+const start=document.getElementById("start");
+const main=document.getElementById("main");
+const music=document.getElementById("music");
 
-startScreen.addEventListener("click", () => {
-  startScreen.style.display = "none";
-  main.style.display = "flex";
+start.addEventListener("click",()=>{
+  start.style.display="none";
+  main.style.display="flex";
   music.play().catch(()=>{});
-  heartLoop();
+  startParticles();
 });
 
-/* HEART GENERATOR */
-function heartLoop(){
-  setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random()*100 + "vw";
-    heart.style.fontSize = (14 + Math.random()*20) + "px";
-    heart.style.animationDuration = (4 + Math.random()*3) + "s";
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 7000);
-  }, 350);
+function startParticles(){
+  setInterval(()=>{
+    const p=document.createElement("div");
+    p.className="particle";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(6+Math.random()*4)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),10000);
+  },220);
 }
 </script>
 
