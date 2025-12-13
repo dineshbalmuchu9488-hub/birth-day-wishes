@@ -8,11 +8,9 @@
 <title>Happy Birthday Pagliii</title>
 
 <style>
-* {
-    box-sizing: border-box;
-}
+/* ================= RESET ================= */
+* { box-sizing: border-box; }
 
-/* ===== BODY & BACKGROUND ===== */
 html, body {
     margin: 0;
     padding: 0;
@@ -21,20 +19,14 @@ html, body {
     text-align: center;
 }
 
+/* ================= BACKGROUND IMAGE ================= */
 body {
-    background-image: url("https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/pexels-alex-andrews-271121-861443.jpg");
+    background: url("https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/pexels-alex-andrews-271121-861443.jpg")
+                no-repeat center center;
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
 
-/* ===== CONTENT WRAPPER (IMPORTANT FIX) ===== */
-.wrapper {
-    position: relative;
-    z-index: 1;   /* 🔥 brings content to front */
-}
-
-/* ===== TAP SCREEN ===== */
+/* ================= TAP SCREEN ================= */
 #tapScreen {
     position: fixed;
     inset: 0;
@@ -47,7 +39,7 @@ body {
     z-index: 9999;
 }
 
-/* ===== HEARTS ===== */
+/* ================= HEARTS ================= */
 .heart {
     position: fixed;
     bottom: -40px;
@@ -60,7 +52,13 @@ body {
     to   { transform: translateY(-140vh); opacity: 0; }
 }
 
-/* ===== CARD ===== */
+/* ================= CONTENT WRAPPER ================= */
+.wrapper {
+    position: relative;
+    z-index: 1;
+}
+
+/* ================= CARD ================= */
 .card {
     background: rgba(255,225,239,0.95);
     padding: 22px;
@@ -69,12 +67,12 @@ body {
     border-radius: 15px;
 }
 
-/* ===== CAKE ===== */
+/* ================= CAKE ================= */
 .cake-box img {
     width: 180px;
     max-width: 70%;
-    display: block;
     margin: 20px auto;
+    display: block;
     filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));
     animation: fadeZoom 1.2s ease-out;
 }
@@ -84,13 +82,40 @@ body {
     to   { opacity: 1; transform: scale(1); }
 }
 
-/* ===== LETTER ===== */
-.letter-box {
-    background: rgba(255,240,247,0.95);
-    padding: 20px;
-    width: 85%;
-    margin: 25px auto 40px;
-    border-radius: 15px;
+/* ================= NOTEBOOK / COPY ================= */
+.book {
+    width: 280px;
+    height: 200px;
+    margin: 30px auto;
+    perspective: 1000px;
+    position: relative;
+}
+
+.page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fffdf7;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+    transition: transform 0.8s;
+}
+
+.page.active {
+    transform: rotateY(0deg);
+}
+
+.next-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    background: #ff4fa7;
+    color: white;
+    font-size: 16px;
 }
 </style>
 </head>
@@ -113,7 +138,7 @@ tap.onclick = () => {
 };
 
 /* Hearts */
-function heart() {
+function createHeart() {
     const h = document.createElement("div");
     h.className = "heart";
     h.textContent = "💖";
@@ -121,10 +146,9 @@ function heart() {
     document.body.appendChild(h);
     setTimeout(() => h.remove(), 7000);
 }
-setInterval(heart, 450);
+setInterval(createHeart, 450);
 </script>
 
-<!-- ===== ALL CONTENT INSIDE WRAPPER ===== -->
 <div class="wrapper">
 
     <div class="card">
@@ -133,16 +157,40 @@ setInterval(heart, 450);
     </div>
 
     <div class="cake-box">
-        <img src="https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/red-birthday-cake-png-5.png"
-             alt="Cake">
+        <img src="https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/red-birthday-cake-png-5.png">
     </div>
 
-    <div class="letter-box">
-        <h2>💌 A Special Message</h2>
-        <p>Stay happy always, stay blessed 🎀✨</p>
+    <!-- NOTEBOOK -->
+    <div class="book" id="book">
+        <div class="page active">💌 Page 1<br>You are very special to me.</div>
+        <div class="page">💌 Page 2<br>Your smile makes everything better.</div>
+        <div class="page">💌 Page 3<br>Never stop being you ❤️</div>
+        <div class="page">🎂 Final Page<br>Happy Birthday Pagliii 🎉</div>
     </div>
+
+    <button class="next-btn" onclick="nextPage()">➡️ Next Page</button>
 
 </div>
+
+<script>
+let pages = document.querySelectorAll(".page");
+let index = 0;
+
+function nextPage() {
+    pages[index].classList.remove("active");
+    index = (index + 1) % pages.length;
+    pages[index].classList.add("active");
+}
+
+/* Swipe support */
+let startX = 0;
+document.getElementById("book").addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+});
+document.getElementById("book").addEventListener("touchend", e => {
+    if (startX - e.changedTouches[0].clientX > 40) nextPage();
+});
+</script>
 
 </body>
 </html>
