@@ -2,150 +2,155 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width_width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Happy Birthday Pagliii</title>
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>Happy Birthday</title>
 
 <style>
-    /* STOP PAGE SHAKE / ZOOM BUG */
-    html, body {
-        margin: 0;
-        padding: 0;
-        max-width: 100%;
-        overflow-x: hidden;
-        touch-action: manipulation;
-        background: #ff7eb3;
-        font-family: 'Poppins', sans-serif;
-        text-align: center;
-    }
-body {
+/* ================= BASIC RESET ================= */
+html, body {
     margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: url("https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birthday-wishes/main/pexels-alex-andrews-271121-861443.jpg") no-repeat center center fixed;
-    background-size: cover;  /* Full screen perfect fit */
+    padding: 0;
+    height: 100%;
     overflow-x: hidden;
+    touch-action: manipulation;
+    font-family: 'Poppins', sans-serif;
     text-align: center;
 }
 
-    /* TAP SCREEN */
-    #tapScreen {
-        position: fixed;
-        inset: 0;
-        background: #ff7eb3;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        color: white;
-        font-size: 32px;
-        z-index: 9999;
-    }
+/* ================= BACKGROUND IMAGE ================= */
+body {
+    background-image: url("https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/pexels-alex-andrews-271121-861443.jpg");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+}
 
-    /* HEART ANIMATION */
-    .heart {
-        position: fixed;
-        bottom: -40px;
-        animation: floatUp 7s linear forwards;
-        pointer-events: none;
-    }
+/* Dark overlay for readability */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: -1;
+}
 
-    @keyframes floatUp {
-        0% { transform: translateY(0) scale(1); opacity: 1; }
-        100% { transform: translateY(-140vh) scale(1.4); opacity: 0; }
-    }
+/* ================= TAP SCREEN ================= */
+#tapScreen {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 32px;
+    z-index: 9999;
+}
 
-    /* CARD */
-    .card {
-        background: #ffe1ef;
-        padding: 25px;
-        width: 85%;
-        margin: 20px auto 10px auto;
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
+/* ================= HEART ANIMATION ================= */
+.heart {
+    position: fixed;
+    bottom: -40px;
+    animation: floatUp 7s linear forwards;
+    pointer-events: none;
+}
 
-    /* CAKE STABLE SIZE + ANIMATION */
-    .cake-box img {
-        width: 180px;          /* Perfect stable size */
-        max-width: 70%;
-        display: block;
-        margin: auto;
-        transform-origin: center center;
-        filter: drop-shadow(0px 4px 12px rgba(0,0,0,0.3));
-    }
+@keyframes floatUp {
+    0%   { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-150vh) scale(1.4); opacity: 0; }
+}
 
-    .cake-animate {
-        animation: fadeZoom 1.4s ease-out forwards;
-    }
+/* ================= CARD ================= */
+.card {
+    background: rgba(255,225,239,0.95);
+    padding: 25px;
+    width: 85%;
+    margin: 25px auto 10px;
+    border-radius: 15px;
+}
 
-    @keyframes fadeZoom {
-        0% { opacity: 0; transform: scale(0.85); }
-        100% { opacity: 1; transform: scale(1); }
-    }
+/* ================= CAKE ================= */
+.cake-box img {
+    width: 180px;
+    max-width: 70%;
+    display: block;
+    margin: 20px auto;
+    transform-origin: center;
+    filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));
+}
 
-    /* LETTER BOX */
-    .letter-box {
-        background: #fff0f7;
-        padding: 20px;
-        width: 85%;
-        margin: 25px auto 40px auto;
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
+.cake-animate {
+    animation: fadeZoom 1.3s ease-out forwards;
+}
 
+@keyframes fadeZoom {
+    0%   { opacity: 0; transform: scale(0.85); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+/* ================= LETTER ================= */
+.letter-box {
+    background: rgba(255,240,247,0.95);
+    padding: 20px;
+    width: 85%;
+    margin: 25px auto 40px;
+    border-radius: 15px;
+}
 </style>
 </head>
+
 <body>
 
 <!-- TAP TO START -->
 <div id="tapScreen">💖 Tap to Start 💖</div>
 
 <!-- MUSIC -->
-<audio id="bgmusic" src="https://files.catbox.moe/f6o9vc.mp3"></audio>
+<audio id="bgmusic" src="YOUR_MUSIC_LINK_HERE.mp3"></audio>
 
 <script>
-    const tapScreen = document.getElementById("tapScreen");
-    const music = document.getElementById("bgmusic");
+const tapScreen = document.getElementById("tapScreen");
+const music = document.getElementById("bgmusic");
 
-    tapScreen.addEventListener("click", () => {
-        music.play();
-        tapScreen.remove();
-        document.body.style.overflow = "auto";  // FIX PAGE SHIFT
-    });
+tapScreen.addEventListener("click", () => {
+    music.play();
+    tapScreen.remove();
+});
 
-    /* HEART GENERATOR */
-    function createHeart() {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.textContent = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (20 + Math.random() * 22) + "px";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 7000);
-    }
-
-    setInterval(createHeart, 400);
-
+/* Hearts */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (18 + Math.random() * 22) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 7000);
+}
+setInterval(createHeart, 400);
 </script>
 
-<!-- MAIN CARD -->
+<!-- CONTENT -->
 <div class="card">
     <h1>💖 Happy Birthday Pagliii 💖</h1>
-    <p>You make the world brighter… Wishing you the most magical and beautiful day! ✨</p>
+    <p>You make the world brighter ✨</p>
 </div>
 
-<!-- CAKE IMAGE (WITH FADE ANIMATION) -->
 <div class="cake-box">
-    <img class="cake-animate" 
+    <img class="cake-animate"
          src="https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/red-birthday-cake-png-5.png"
          alt="Cake">
 </div>
 
-<!-- LETTER -->
 <div class="letter-box">
     <h2>💌 A Special Message 💌</h2>
-    <p>You deserve all the happiness, magic and smiles… Stay happy always Pagliii 🎀✨</p>
+    <p>
+        May your life be filled with love, happiness and smiles.
+        Stay blessed always 🎀✨
+    </p>
 </div>
 
 </body>
 </html>
-
