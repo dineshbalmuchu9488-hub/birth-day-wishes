@@ -8,50 +8,51 @@
 <title>Happy Birthday</title>
 
 <style>
-/* ================= BASIC RESET ================= */
+/* ===== RESET ===== */
+* {
+    box-sizing: border-box;
+}
+
 html, body {
     margin: 0;
     padding: 0;
-    height: 100%;
+    width: 100%;
+    min-height: 100%;
     overflow-x: hidden;
-    touch-action: manipulation;
     font-family: 'Poppins', sans-serif;
     text-align: center;
 }
 
-/* ================= BACKGROUND IMAGE ================= */
+/* ===== BACKGROUND IMAGE (GLITCH FREE) ===== */
 body {
-    background-image: url("https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/pexels-alex-andrews-271121-861443.jpg
-");
-    background-repeat: no-repeat;
-    background-position: center center;
+    background-image: url("https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/pexels-alex-andrews-271121-861443.jpg");
     background-size: cover;
-    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-/* Dark overlay for readability */
-body::before {
-    content: "";
+/* Dark overlay (SAFE METHOD) */
+.bg-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.35);
     z-index: -1;
 }
 
-/* ================= TAP SCREEN ================= */
+/* ===== TAP SCREEN ===== */
 #tapScreen {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.9);
+    color: white;
+    font-size: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
-    font-size: 32px;
     z-index: 9999;
 }
 
-/* ================= HEART ANIMATION ================= */
+/* ===== HEARTS ===== */
 .heart {
     position: fixed;
     bottom: -40px;
@@ -60,99 +61,4 @@ body::before {
 }
 
 @keyframes floatUp {
-    0%   { transform: translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateY(-150vh) scale(1.4); opacity: 0; }
-}
-
-/* ================= CARD ================= */
-.card {
-    background: rgba(255,225,239,0.95);
-    padding: 25px;
-    width: 85%;
-    margin: 25px auto 10px;
-    border-radius: 15px;
-}
-
-/* ================= CAKE ================= */
-.cake-box img {
-    width: 180px;
-    max-width: 70%;
-    display: block;
-    margin: 20px auto;
-    transform-origin: center;
-    filter: drop-shadow(0 6px 14px rgba(0,0,0,0.4));
-}
-
-.cake-animate {
-    animation: fadeZoom 1.3s ease-out forwards;
-}
-
-@keyframes fadeZoom {
-    0%   { opacity: 0; transform: scale(0.85); }
-    100% { opacity: 1; transform: scale(1); }
-}
-
-/* ================= LETTER ================= */
-.letter-box {
-    background: rgba(255,240,247,0.95);
-    padding: 20px;
-    width: 85%;
-    margin: 25px auto 40px;
-    border-radius: 15px;
-}
-</style>
-</head>
-
-<body>
-
-<!-- TAP TO START -->
-<div id="tapScreen">💖 Tap to Start 💖</div>
-
-<!-- MUSIC -->
-<audio id="bgmusic" src="YOUR_MUSIC_LINK_HERE.mp3"></audio>
-
-<script>
-const tapScreen = document.getElementById("tapScreen");
-const music = document.getElementById("bgmusic");
-
-tapScreen.addEventListener("click", () => {
-    music.play();
-    tapScreen.remove();
-});
-
-/* Hearts */
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.textContent = "💖";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (18 + Math.random() * 22) + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 7000);
-}
-setInterval(createHeart, 400);
-</script>
-
-<!-- CONTENT -->
-<div class="card">
-    <h1>💖 Happy Birthday Pagliii 💖</h1>
-    <p>You make the world brighter ✨</p>
-</div>
-
-<div class="cake-box">
-    <img class="cake-animate"
-         src="https://raw.githubusercontent.com/dineshbalmuchu9488-hub/birth-day-wishes/main/red-birthday-cake-png-5.png"
-         alt="Cake">
-</div>
-
-<div class="letter-box">
-    <h2>💌 A Special Message 💌</h2>
-    <p>
-        May your life be filled with love, happiness and smiles.
-        Stay blessed always 🎀✨
-    </p>
-</div>
-
-</body>
-</html>
-
+    0% { transform
