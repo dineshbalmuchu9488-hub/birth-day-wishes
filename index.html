@@ -11,20 +11,20 @@
   padding:0;
   box-sizing:border-box;
   -webkit-tap-highlight-color:transparent;
+  font-family:'Segoe UI',sans-serif;
 }
 
-/* BACKGROUND */
+/* ===== BACKGROUND ===== */
 body{
   width:100vw;
   height:100vh;
   overflow:hidden;
-  font-family:'Segoe UI',sans-serif;
   color:#fff;
   background:
     radial-gradient(circle at top,#1c2a3a,#06080d 60%,#000);
 }
 
-/* STARS */
+/* ===== STARS ===== */
 .stars,.stars2{
   position:fixed;
   inset:0;
@@ -52,7 +52,7 @@ body{
   to{background-position:-2000px 1000px;}
 }
 
-/* TAP */
+/* ===== TAP ===== */
 #start{
   position:fixed;
   inset:0;
@@ -74,7 +74,7 @@ body{
   100%{opacity:.3}
 }
 
-/* OVERLAY */
+/* ===== OVERLAY ===== */
 .overlay{
   position:fixed;
   inset:0;
@@ -88,7 +88,7 @@ body{
   z-index:2;
 }
 
-/* MAIN */
+/* ===== MAIN ===== */
 #main{
   position:fixed;
   inset:0;
@@ -101,11 +101,10 @@ body{
   padding:20px;
 }
 
-/* TEXT */
+/* ===== TEXT ===== */
 .title{
   font-size:42px;
   letter-spacing:4px;
-  animation:titleIn 2.6s ease forwards;
   text-shadow:
     0 0 14px rgba(255,255,255,.25),
     0 0 45px rgba(180,220,255,.2);
@@ -115,20 +114,28 @@ body{
   font-size:18px;
   letter-spacing:1px;
   color:#b9c9d8;
-  animation:subIn 2s ease forwards;
-  animation-delay:1.6s;
 }
 
-@keyframes titleIn{
-  from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px);}
-  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0);}
+/* ===== LETTER ANIMATION ===== */
+.letter span{
+  opacity:0;
+  display:inline-block;
+  animation:letterIn .7s ease forwards;
 }
-@keyframes subIn{
-  from{opacity:0;transform:translateY(20px);}
-  to{opacity:1;transform:translateY(0);}
+@keyframes letterIn{
+  from{
+    opacity:0;
+    transform:translateY(26px);
+    filter:blur(6px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+    filter:blur(0);
+  }
 }
 
-/* PARTICLES */
+/* ===== FLOATING DUST ===== */
 .particle{
   position:fixed;
   bottom:-10px;
@@ -144,7 +151,7 @@ body{
   to{transform:translateY(-120vh);opacity:0;}
 }
 
-/* FIREWORKS */
+/* ===== FIREWORKS ===== */
 #fireworks{
   position:fixed;
   inset:0;
@@ -164,8 +171,10 @@ body{
 <div class="overlay"></div>
 
 <div id="main">
-  <div class="title">HAPPY BIRTHDAY PAGLIIII 🫰💖</div>
-  <div class="subtitle">
+  <div class="title letter" id="titleText">
+    Happy Birthday Pagliiii 🫰💖
+  </div>
+  <div class="subtitle letter" id="subText">
     Under the same sky, you make every moment special 💖<br>
     May Mahadev bless you with happiness and keep you smiling always ✨
   </div>
@@ -191,9 +200,28 @@ start.onclick=()=>{
   start.style.display="none";
   main.style.display="flex";
   music.play().catch(()=>{});
+  animateLetters("titleText",0.08);
+  setTimeout(()=>animateLetters("subText",0.04),2600);
   particles();
   initFireworks();
 };
+
+/* LETTER BY LETTER */
+function animateLetters(id,speed){
+  const el=document.getElementById(id);
+  const text=el.innerHTML;
+  el.innerHTML="";
+  [...text].forEach((c,i)=>{
+    if(c===" "){
+      el.innerHTML+="&nbsp;";
+    }else{
+      const s=document.createElement("span");
+      s.innerHTML=c;
+      s.style.animationDelay=(i*speed)+"s";
+      el.appendChild(s);
+    }
+  });
+}
 
 /* PARTICLES */
 function particles(){
@@ -207,17 +235,16 @@ function particles(){
   },300);
 }
 
-/* FIREWORKS (START ONLY AFTER TAP) */
+/* FIREWORKS */
 const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;
 canvas.height=innerHeight;
 
-let rockets=[], sparks=[], fwOn=false;
+let rockets=[], sparks=[];
 
 function initFireworks(){
-  fwOn=true;
-  setInterval(()=>launch(),1200);
+  setInterval(launch,1200);
   requestAnimationFrame(loop);
 }
 
@@ -242,7 +269,6 @@ function explode(x,y){
 }
 
 function loop(){
-  if(!fwOn) return;
   ctx.fillStyle="rgba(0,0,0,0.25)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
