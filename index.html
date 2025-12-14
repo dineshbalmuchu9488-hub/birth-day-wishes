@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Happy Birthday Pagliiii 💖</title>
 
 <style>
@@ -14,12 +15,44 @@
   font-family:'Segoe UI',sans-serif;
 }
 
+/* ===== BACKGROUND ===== */
 body{
   width:100vw;
   height:100vh;
   overflow:hidden;
-  background:linear-gradient(135deg,#ffd6e8,#ffeef6);
-  color:#444;
+  color:#fff;
+  background:
+    radial-gradient(circle at top,#1c2a3a,#06080d 60%,#000);
+}
+
+/* ===== STARS ===== */
+.stars,.stars2{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+}
+
+.stars{
+  background-image:
+    radial-gradient(1px 1px at 20px 30px,#fff,transparent),
+    radial-gradient(1px 1px at 120px 80px,#bbb,transparent),
+    radial-gradient(1px 1px at 200px 160px,#fff,transparent),
+    radial-gradient(1px 1px at 300px 220px,#aaa,transparent);
+  animation:moveStars 120s linear infinite;
+}
+
+.stars2{
+  background-image:
+    radial-gradient(2px 2px at 60px 100px,#fff,transparent),
+    radial-gradient(2px 2px at 180px 160px,#ccc,transparent),
+    radial-gradient(2px 2px at 260px 60px,#ddd,transparent);
+  animation:moveStars 180s linear infinite;
+  opacity:.6;
+}
+
+@keyframes moveStars{
+  from{background-position:0 0;}
+  to{background-position:-2000px 1000px;}
 }
 
 /* ===== TAP SCREEN ===== */
@@ -35,19 +68,32 @@ body{
 
 #start span{
   font-size:22px;
-  letter-spacing:2px;
-  color:#fff;
-  animation:pulse 1.5s infinite;
+  letter-spacing:3px;
+  color:#aaa;
+  animation:pulse 1.6s infinite;
 }
 
 @keyframes pulse{
-  0%{opacity:.4}
+  0%{opacity:.3}
   50%{opacity:1}
-  100%{opacity:.4}
+  100%{opacity:.3}
 }
 
-/* ===== PAGES ===== */
-.page{
+/* ===== OVERLAY ===== */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(0,0,0,.85),
+    rgba(0,0,0,.25),
+    rgba(0,0,0,.9)
+  );
+  pointer-events:none;
+}
+
+/* ===== MAIN ===== */
+#main{
   position:fixed;
   inset:0;
   display:none;
@@ -55,123 +101,96 @@ body{
   align-items:center;
   justify-content:center;
   text-align:center;
+  z-index:3;
   padding:20px;
 }
 
-.page.active{
-  display:flex;
-  animation:fadeIn 1.2s ease;
+/* ===== TEXT ===== */
+.title{
+  font-size:40px;
+  letter-spacing:4px;
+  text-shadow:
+    0 0 14px rgba(255,255,255,.25),
+    0 0 45px rgba(180,220,255,.2);
 }
 
-@keyframes fadeIn{
-  from{opacity:0;transform:scale(.95);}
-  to{opacity:1;transform:scale(1);}
+.subtitle{
+  margin-top:18px;
+  font-size:18px;
+  letter-spacing:1px;
+  color:#b9c9d8;
 }
 
-h1{
-  font-size:36px;
-  color:#ff4d88;
+/* ===== LETTER ANIMATION ===== */
+.letter span{
+  opacity:0;
+  display:inline-block;
+  animation:letterIn .7s ease forwards;
 }
 
-p{
-  font-size:16px;
-  margin-top:15px;
+@keyframes letterIn{
+  from{
+    opacity:0;
+    transform:translateY(26px);
+    filter:blur(6px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+    filter:blur(0);
+  }
 }
 
-button{
+/* ===== EXTRA MESSAGE ===== */
+.extra-msg{
   margin-top:30px;
-  padding:14px 28px;
-  border:none;
-  border-radius:30px;
-  background:#ff4d88;
-  color:white;
-  font-size:15px;
-  cursor:pointer;
-  box-shadow:0 10px 25px rgba(0,0,0,.2);
-}
-
-img{
-  width:260px;
-  max-width:90%;
-  border-radius:20px;
-  margin-top:25px;
-  box-shadow:0 15px 35px rgba(0,0,0,.25);
-  animation:float 3s ease-in-out infinite;
-}
-
-@keyframes float{
-  0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-12px);}
+  font-size:17px;
+  color:#ffd1e8;
+  line-height:1.5;
 }
 
 /* ===== HEARTS ===== */
 .heart{
   position:fixed;
-  bottom:-10px;
+  bottom:-20px;
   font-size:18px;
   animation:heartUp linear forwards;
+  pointer-events:none;
 }
 
 @keyframes heartUp{
-  from{transform:translateY(0);opacity:1;}
-  to{transform:translateY(-120vh);opacity:0;}
+  from{transform:translateY(0) scale(1);opacity:1;}
+  to{transform:translateY(-120vh) scale(1.4);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
+<div class="stars"></div>
+<div class="stars2"></div>
+
 <!-- TAP -->
 <div id="start">
-  <span>TAP TO START 💖</span>
+  <span>TAP TO START</span>
 </div>
 
-<!-- PAGE 1 -->
-<div class="page active">
-  <h1>Hey You 🥰</h1>
-  <p>Someone made something special just for you 💝</p>
-  <button onclick="nextPage()">Open 🎁</button>
-</div>
+<div class="overlay"></div>
 
-<!-- PAGE 2 -->
-<div class="page">
-  <h1>🎉 Happy Birthday Pagliiii 🎀</h1>
-  <p>You make everything cuter 💕</p>
-  <button onclick="nextPage()">Next 💗</button>
-</div>
+<!-- MAIN -->
+<div id="main">
+  <div class="title letter" id="titleText">
+    HAPPY BIRTHDAY PAGLIIII 🫰💖
+  </div>
 
-<!-- PAGE 3 -->
-<div class="page">
-  <h1>Your Smile 🥹</h1>
-  <img src="photo1.jpg">
-  <p>This smile makes my world brighter ✨</p>
-  <button onclick="nextPage()">Next 📸</button>
-</div>
+  <div class="subtitle">
+    Under the same sky, you make every moment special 💖
+  </div>
 
-<!-- PAGE 4 -->
-<div class="page">
-  <h1>So Special 💖</h1>
-  <img src="photo2.jpg">
-  <p>Every moment with you feels magical 🧸</p>
-  <button onclick="nextPage()">Next 💌</button>
-</div>
-
-<!-- PAGE 5 -->
-<div class="page">
-  <h1>Message For You 💞</h1>
-  <p>
-    Under the same sky, you make every moment special 💕<br>
-    May Mahadev bless you with happiness<br>
-    and keep your smile forever 🌸
-  </p>
-  <button onclick="nextPage()">Final 🎂</button>
-</div>
-
-<!-- PAGE 6 -->
-<div class="page">
-  <h1>🎂 Happiest Birthday 🎉</h1>
-  <p>Sending you unlimited hugs 🤗💖</p>
-  <button onclick="location.reload()">Replay 🔁</button>
+  <div class="subtitle letter extra-msg" id="extraText">
+    You are my favorite reason to smile every day 💕<br>
+    May Mahadev bless you with happiness and keep you smiling always ✨
+  </div>
 </div>
 
 <!-- MUSIC -->
@@ -181,31 +200,48 @@ img{
 
 <script>
 const start=document.getElementById("start");
-const pages=document.querySelectorAll(".page");
+const main=document.getElementById("main");
 const music=document.getElementById("music");
-let current=0;
 
+/* ===== TAP START ===== */
 start.addEventListener("click",()=>{
   start.style.display="none";
+  main.style.display="flex";
   music.play().catch(()=>{});
-  heartEffect();
+  startHearts();
 });
 
-function nextPage(){
-  pages[current].classList.remove("active");
-  current++;
-  if(current<pages.length){
-    pages[current].classList.add("active");
-  }
+/* ===== LETTER ANIMATION FUNCTION ===== */
+function animateText(el,delayStart,speed){
+  const html = el.innerHTML;
+  el.innerHTML="";
+  let delay=delayStart;
+
+  html.split("").forEach(char=>{
+    if(char === "<"){
+      el.innerHTML += "<br>";
+      return;
+    }
+    const span=document.createElement("span");
+    span.innerHTML = char===" "?"&nbsp;":char;
+    span.style.animationDelay = delay+"s";
+    el.appendChild(span);
+    delay += speed;
+  });
 }
 
-function heartEffect(){
+/* START LETTER ANIMATIONS */
+animateText(document.getElementById("titleText"),0.3,0.08);
+animateText(document.getElementById("extraText"),3.5,0.06);
+
+/* ===== HEART EFFECT ===== */
+function startHearts(){
   setInterval(()=>{
     const h=document.createElement("div");
     h.className="heart";
     h.innerHTML="💖";
     h.style.left=Math.random()*100+"vw";
-    h.style.animationDuration=(5+Math.random()*3)+"s";
+    h.style.animationDuration=(5+Math.random()*4)+"s";
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),9000);
   },300);
