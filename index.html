@@ -14,14 +14,12 @@
   font-family:'Segoe UI',sans-serif;
 }
 
-/* BACKGROUND */
 body{
   width:100vw;
   height:100vh;
   overflow:hidden;
+  background:radial-gradient(circle at top,#1c2a3a,#06080d 60%,#000);
   color:#fff;
-  background:
-    radial-gradient(circle at top,#1c2a3a,#06080d 60%,#000);
 }
 
 /* STARS */
@@ -29,21 +27,18 @@ body{
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:1;
 }
 .stars{
   background-image:
     radial-gradient(1px 1px at 20px 30px,#fff,transparent),
     radial-gradient(1px 1px at 120px 80px,#bbb,transparent),
-    radial-gradient(1px 1px at 200px 160px,#fff,transparent),
-    radial-gradient(1px 1px at 300px 220px,#aaa,transparent);
+    radial-gradient(1px 1px at 200px 160px,#fff,transparent);
   animation:moveStars 120s linear infinite;
 }
 .stars2{
   background-image:
     radial-gradient(2px 2px at 60px 100px,#fff,transparent),
-    radial-gradient(2px 2px at 180px 160px,#ccc,transparent),
-    radial-gradient(2px 2px at 260px 60px,#ddd,transparent);
+    radial-gradient(2px 2px at 180px 160px,#ccc,transparent);
   animation:moveStars 180s linear infinite;
   opacity:.6;
 }
@@ -65,7 +60,6 @@ body{
 #start span{
   font-size:22px;
   letter-spacing:3px;
-  color:#aaa;
   animation:pulse 1.6s infinite;
 }
 @keyframes pulse{
@@ -79,12 +73,25 @@ body{
   position:fixed;
   inset:0;
   display:none;
+  z-index:5;
+}
+
+/* PAGE COMMON */
+.page{
+  position:absolute;
+  inset:0;
+  display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
   padding:20px;
-  z-index:5;
+  transition:opacity .8s ease, transform .8s ease;
+}
+
+/* PAGE 1 – WISH */
+#pageWish{
+  opacity:1;
 }
 
 /* TITLE */
@@ -126,8 +133,8 @@ body{
 
 /* NEXT BUTTON */
 #nextBtn{
-  margin-top:18px;
-  padding:12px 26px;
+  margin-top:22px;
+  padding:12px 28px;
   border:none;
   border-radius:30px;
   background:#ff5fa2;
@@ -135,21 +142,23 @@ body{
   font-size:15px;
   cursor:pointer;
   display:none;
-  box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
 
-/* IMAGE */
-#surpriseImg{
-  margin-top:18px;
-  width:260px;
-  border-radius:18px;
+/* PAGE 2 – IMAGE */
+#pageImage{
   opacity:0;
-  transform:scale(.9);
-  transition:.8s ease;
+  pointer-events:none;
+  transform:scale(1.05);
 }
-#surpriseImg.show{
+#pageImage.show{
   opacity:1;
+  pointer-events:auto;
   transform:scale(1);
+}
+#pageImage img{
+  width:280px;
+  border-radius:20px;
+  box-shadow:0 25px 60px rgba(0,0,0,.6);
 }
 
 /* FIREWORK CANVAS */
@@ -171,26 +180,30 @@ body{
 <div id="start"><span>TAP TO OPEN 🎁</span></div>
 
 <div id="main">
-  <div class="title" id="titleText">Happy Birthday Pagliiii 💖</div>
 
-  <div class="card" id="cardBox">
-    <div id="cardText">
-      Dear Pagliiii 💕,<br><br>
-      On your special day, I just want you to know<br>
-      how much you truly mean to me.<br><br>
-      Stay happy, stay smiling,<br>
-      and never forget how special you are ✨<br><br>
-      — Always yours 💖
+  <!-- PAGE 1 -->
+  <div class="page" id="pageWish">
+    <div class="title" id="titleText">Happy Birthday Pagliiii 💖</div>
+
+    <div class="card" id="cardBox">
+      <div id="cardText">
+        Dear Pagliiii 💕,<br><br>
+        On your special day, I just want you to know<br>
+        how much you truly mean to me.<br><br>
+        Stay happy, stay smiling,<br>
+        and never forget how special you are ✨<br><br>
+        — Always yours 💖
+      </div>
     </div>
+
+    <button id="nextBtn">Next 💖</button>
   </div>
 
-  <!-- NEXT BUTTON -->
-  <button id="nextBtn">Next 💖</button>
+  <!-- PAGE 2 -->
+  <div class="page" id="pageImage">
+    <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e" alt="memory">
+  </div>
 
-  <!-- IMAGE -->
-  <img id="surpriseImg"
-       src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e"
-       alt="memory">
 </div>
 
 <audio id="music" loop>
@@ -207,21 +220,19 @@ const main=document.getElementById("main");
 const music=document.getElementById("music");
 const fireSound=document.getElementById("fireSound");
 const nextBtn=document.getElementById("nextBtn");
-const img=document.getElementById("surpriseImg");
 
 /* START */
 start.onclick=()=>{
   start.style.display="none";
-  main.style.display="flex";
+  main.style.display="block";
   music.play().catch(()=>{});
-
   startFireworks();
 
-  setTimeout(animateTitle,2000);
+  setTimeout(animateTitle,1200);
   setTimeout(()=>{
     cardBox.style.opacity=1;
     animateCard();
-  },4200);
+  },3200);
 };
 
 /* TITLE */
@@ -258,24 +269,24 @@ function animateCard(){
     }
   });
 
-  /* SHOW NEXT BUTTON AFTER TEXT */
-  setTimeout(()=>{
-    nextBtn.style.display="inline-block";
-  }, d*1000 + 500);
+  setTimeout(()=> nextBtn.style.display="inline-block", d*1000 + 400);
 }
 
-/* NEXT BUTTON CLICK */
+/* NEXT PAGE */
 nextBtn.onclick=()=>{
-  img.classList.add("show");
-  nextBtn.style.display="none";
+  document.getElementById("pageWish").style.opacity=0;
+  document.getElementById("pageWish").style.pointerEvents="none";
+
+  setTimeout(()=>{
+    document.getElementById("pageImage").classList.add("show");
+  },800);
 };
 
-/* FIREWORKS (BACKGROUND) */
+/* FIREWORKS */
 const canvas=document.getElementById("fireCanvas");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;
 canvas.height=innerHeight;
-
 let rockets=[], sparks=[];
 
 function startFireworks(){
@@ -291,7 +302,7 @@ function startFireworks(){
 }
 
 function explode(x,y){
-  if(Math.random()>0.3){
+  if(Math.random()>0.4){
     const s=fireSound.cloneNode();
     s.volume=0.4+Math.random()*0.3;
     s.play().catch(()=>{});
