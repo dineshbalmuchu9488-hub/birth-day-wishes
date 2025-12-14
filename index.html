@@ -22,30 +22,6 @@ body{
   color:#fff;
 }
 
-/* STARS */
-.stars,.stars2{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
-.stars{
-  background:
-    radial-gradient(1px 1px at 20px 30px,#fff,transparent),
-    radial-gradient(1px 1px at 120px 80px,#bbb,transparent),
-    radial-gradient(1px 1px at 200px 160px,#fff,transparent);
-  animation:moveStars 120s linear infinite;
-}
-.stars2{
-  background:
-    radial-gradient(2px 2px at 60px 100px,#fff,transparent),
-    radial-gradient(2px 2px at 180px 160px,#ccc,transparent);
-  animation:moveStars 180s linear infinite;
-  opacity:.6;
-}
-@keyframes moveStars{
-  to{background-position:-2000px 1000px;}
-}
-
 /* TAP SCREEN */
 #start{
   position:fixed;
@@ -54,16 +30,14 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  z-index:20;
+  z-index:10;
 }
 #start span{
   font-size:22px;
   letter-spacing:3px;
   animation:pulse 1.6s infinite;
 }
-@keyframes pulse{
-  50%{opacity:1}
-}
+@keyframes pulse{50%{opacity:1}}
 
 /* MAIN */
 #main{
@@ -87,19 +61,13 @@ body{
 
 /* TITLE */
 .title{
-  font-size:38px;
-  margin-bottom:24px;
-  visibility:hidden;
-}
-.title span{
-  display:inline-block;
-  padding:4px 2px;
-  line-height:1.4;
+  font-size:36px;
+  margin-bottom:20px;
   opacity:0;
-  animation:titleIn .7s ease forwards;
+  animation:fadeUp 1.2s ease forwards;
 }
-@keyframes titleIn{
-  from{opacity:0;transform:translateY(24px);}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
   to{opacity:1;transform:translateY(0);}
 }
 
@@ -112,15 +80,8 @@ body{
   backdrop-filter:blur(6px);
   box-shadow:0 20px 45px rgba(0,0,0,.45);
   opacity:0;
-}
-.card span{
-  display:inline-block;
-  opacity:0;
-  animation:cardIn .6s ease forwards;
-}
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(16px);}
-  to{opacity:1;transform:translateY(0);}
+  animation:fadeUp 1.2s ease forwards;
+  animation-delay:1.2s;
 }
 
 /* NEXT BUTTON */
@@ -134,7 +95,6 @@ body{
   font-size:15px;
   cursor:pointer;
   display:none;
-  line-height:1.4;
 }
 
 /* IMAGE PAGE */
@@ -145,7 +105,7 @@ body{
   border-radius:20px;
   box-shadow:0 25px 60px rgba(0,0,0,.6);
   opacity:0;
-  transform:scale(.96);
+  transform:scale(.95);
   transition:opacity 2s ease, transform 2s ease;
 }
 #pageImage.active img{
@@ -153,64 +113,47 @@ body{
   transform:scale(1);
 }
 
-/* CONFETTI */
-.confetti{
-  position:fixed;
-  width:8px;
-  height:14px;
-  top:-20px;
-  animation:confettiFall linear forwards;
-  z-index:15;
-}
-@keyframes confettiFall{
-  to{transform:translateY(120vh) rotate(360deg);opacity:0;}
-}
-
 /* FIREWORK CANVAS */
 #fireCanvas{
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:2;
 }
 </style>
 </head>
 
 <body>
 
-<div class="stars"></div>
-<div class="stars2"></div>
 <canvas id="fireCanvas"></canvas>
 
 <div id="start"><span>TAP TO OPEN 🎁</span></div>
 
 <div id="main">
+
+  <!-- PAGE 1 -->
   <div class="page" id="pageWish">
-    <div class="title" id="titleText">Happy Birthday Pagliiii 💖</div>
+    <div class="title">Happy Birthday Pagliiii 💖</div>
 
     <div class="card" id="cardBox">
-      <div id="cardText">
-        Dear Pagliiii 💕,<br><br>
-        On your special day, I just want you to know<br>
-        how much you truly mean to me.<br><br>
-        Stay happy, stay smiling,<br>
-        and never forget how special you are ✨<br><br>
-        — Always yours 💖
-      </div>
+      Dear Pagliiii 💕<br><br>
+      On your special day,<br>
+      I just want you to smile<br>
+      and feel how special you are ✨<br><br>
+      — Always yours 💖
     </div>
 
     <button id="nextBtn">Next 💖</button>
   </div>
 
+  <!-- PAGE 2 -->
   <div class="page" id="pageImage">
     <img src="https://files.catbox.moe/10peuo.jpg" alt="Birthday Cake">
   </div>
+
 </div>
 
-<audio id="music" loop src="https://files.catbox.moe/f6o9vc.mp3"></audio>
+<audio id="music" src="https://files.catbox.moe/f6o9vc.mp3" loop></audio>
 <audio id="fireSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c45b9bb6c.mp3"></audio>
-<audio id="bgCracker" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_8bfa2b0c27.mp3"></audio>
-<audio id="popSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1c7f0c8f6b.mp3"></audio>
 
 <script>
 const start=document.getElementById("start");
@@ -218,121 +161,65 @@ const main=document.getElementById("main");
 const pageWish=document.getElementById("pageWish");
 const pageImage=document.getElementById("pageImage");
 const nextBtn=document.getElementById("nextBtn");
+const music=document.getElementById("music");
+const fireSound=document.getElementById("fireSound");
 
+/* START */
 start.onclick=()=>{
   start.style.display="none";
   main.style.display="block";
   pageWish.classList.add("active");
+  music.play().catch(()=>{});
+  startFireworks();
 
-  blast();
-  document.getElementById("music").play().catch(()=>{});
-  fireworks();
-  bgCrackers();
-
-  setTimeout(titleAnim,1200);
-  setTimeout(()=>{cardBox.style.opacity=1; cardAnim();},3200);
+  setTimeout(()=>nextBtn.style.display="inline-block",3500);
 };
 
-function blast(){
-  const pop=document.getElementById("popSound");
-  pop.volume=.6;
-  pop.play().catch(()=>{});
-  for(let i=0;i<40;i++){
-    const c=document.createElement("div");
-    c.className="confetti";
-    c.style.left=Math.random()*100+"vw";
-    c.style.background=`hsl(${Math.random()*360},80%,70%)`;
-    c.style.animationDuration=(3+Math.random()*2)+"s";
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),5000);
-  }
-}
-
-function titleAnim(){
-  const el=titleText;
-  const t=el.textContent;
-  el.innerHTML="";
-  el.style.visibility="visible";
-  [...t].forEach((c,i)=>{
-    const s=document.createElement("span");
-    s.textContent=c===" "?"\u00A0":c;
-    s.style.animationDelay=i*.08+"s";
-    el.appendChild(s);
-  });
-}
-
-function cardAnim(){
-  const el=cardText;
-  const nodes=[...el.childNodes];
-  el.innerHTML="";
-  let d=0;
-  nodes.forEach(n=>{
-    if(n.nodeType===3){
-      [...n.textContent].forEach(c=>{
-        const s=document.createElement("span");
-        s.innerHTML=c===" "?"&nbsp;":c;
-        s.style.animationDelay=d+"s";
-        el.appendChild(s);
-        d+=.04;
-      });
-    }else if(n.nodeName==="BR"){
-      el.appendChild(document.createElement("br"));
-    }
-  });
-  setTimeout(()=>nextBtn.style.display="inline-block",d*1000+400);
-}
-
+/* NEXT PAGE */
 nextBtn.onclick=()=>{
   pageWish.classList.remove("active");
-  setTimeout(()=>pageImage.classList.add("active"),400);
+  setTimeout(()=>pageImage.classList.add("active"),300);
 };
 
-function bgCrackers(){
-  setInterval(()=>{
-    const s=bgCracker.cloneNode();
-    s.volume=.15+Math.random()*.25;
-    s.play().catch(()=>{});
-  },2500+Math.random()*2000);
-}
-
-/* FIREWORKS */
-const canvas=fireCanvas;
+/* SIMPLE FIREWORKS (LOW LOAD) */
+const canvas=document.getElementById("fireCanvas");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;
 canvas.height=innerHeight;
-let rockets=[],sparks=[];
-function fireworks(){
+
+let sparks=[];
+
+function startFireworks(){
   setInterval(()=>{
-    rockets.push({x:Math.random()*canvas.width,y:canvas.height,vy:-8,ey:canvas.height*(.3+Math.random()*.3)});
-  },1400);
+    explode(Math.random()*canvas.width, canvas.height*(0.3+Math.random()*0.3));
+  },1800);
   requestAnimationFrame(loop);
 }
+
 function explode(x,y){
-  if(Math.random()>.5){
-    const s=fireSound.cloneNode();
-    s.volume=.35+Math.random()*.35;
-    s.play().catch(()=>{});
-  }
-  for(let i=0;i<120;i++){
+  fireSound.volume=0.4;
+  fireSound.play().catch(()=>{});
+  for(let i=0;i<40;i++){
     const a=Math.random()*Math.PI*2;
-    const sp=Math.random()*5+2;
-    sparks.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:100});
+    const s=Math.random()*3+2;
+    sparks.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:50});
   }
 }
+
 function loop(){
-  ctx.fillStyle="rgba(0,0,0,.25)";
+  ctx.fillStyle="rgba(0,0,0,.3)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
-  rockets.forEach((r,i)=>{
-    r.y+=r.vy;
-    ctx.fillRect(r.x,r.y,2,10);
-    if(r.y<=r.ey){explode(r.x,r.y); rockets.splice(i,1);}
-  });
+
   sparks.forEach((p,i)=>{
-    p.x+=p.vx;p.y+=p.vy;p.vy+=.04;p.life--;
-    ctx.fillStyle=`rgba(255,215,160,${p.life/100})`;
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.vy+=.05;
+    p.life--;
+    ctx.fillStyle=`rgba(255,200,150,${p.life/50})`;
     ctx.fillRect(p.x,p.y,2,2);
     if(p.life<=0)sparks.splice(i,1);
   });
+
   requestAnimationFrame(loop);
 }
 </script>
