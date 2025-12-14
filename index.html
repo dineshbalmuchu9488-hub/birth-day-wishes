@@ -90,6 +90,7 @@ body{
   font-size:38px;
   letter-spacing:3px;
   margin-bottom:24px;
+  visibility:hidden;
   text-shadow:
     0 0 14px rgba(255,255,255,.25),
     0 0 40px rgba(180,220,255,.2);
@@ -124,20 +125,21 @@ body{
   to{opacity:1;transform:translateY(0);}
 }
 
-/* HEART BLAST */
-.heart{
+/* PAPER CONFETTI */
+.paper{
   position:fixed;
-  bottom:-20px;
-  font-size:18px;
-  animation:heartUp linear forwards;
-  pointer-events:none;
+  width:8px;
+  height:14px;
+  background:#ffd1e8;
+  animation:paperFall linear forwards;
+  z-index:3;
 }
-@keyframes heartUp{
-  from{transform:translateY(0) scale(1);opacity:1;}
-  to{transform:translateY(-120vh) scale(1.4);opacity:0;}
+@keyframes paperFall{
+  from{transform:translateY(0) rotate(0deg);opacity:1;}
+  to{transform:translateY(120vh) rotate(360deg);opacity:0;}
 }
 
-/* CRACKER SPARK */
+/* FIRE CRACKER SPARKS */
 .spark{
   position:fixed;
   width:3px;
@@ -160,12 +162,8 @@ body{
 <div class="stars"></div>
 <div class="stars2"></div>
 
-<!-- TAP -->
-<div id="start">
-  <span>TAP TO OPEN 💌</span>
-</div>
+<div id="start"><span>TAP TO OPEN 🎁</span></div>
 
-<!-- MAIN -->
 <div id="main">
   <div class="title" id="titleText">
     Happy Birthday Pagliiii 💖
@@ -189,63 +187,72 @@ body{
   <source src="https://files.catbox.moe/f6o9vc.mp3">
 </audio>
 
-<script>
-const start = document.getElementById("start");
-const main  = document.getElementById("main");
-const music = document.getElementById("music");
+<audio id="popSound">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_1c7f0c8f6b.mp3">
+</audio>
 
-/* TAP */
-start.onclick = () => {
+<script>
+const start=document.getElementById("start");
+const main=document.getElementById("main");
+const music=document.getElementById("music");
+const popSound=document.getElementById("popSound");
+
+start.onclick=()=>{
   start.style.display="none";
   main.style.display="flex";
   music.play().catch(()=>{});
 
-  // 1️⃣ Surprise blast FIRST
-  blast();
+  // 1️⃣ paper blast with sound
+  popSound.volume=0.5;
+  popSound.play().catch(()=>{});
+  paperBlast();
 
-  // 2️⃣ Title after blast
-  setTimeout(()=>{
-    animateTitle();
-  },1200);
+  // 2️⃣ fire crackers background
+  setTimeout(()=>fireCrackers(),800);
 
-  // 3️⃣ Card after title
+  // 3️⃣ title
+  setTimeout(()=>animateTitle(),2000);
+
+  // 4️⃣ card
   setTimeout(()=>{
     document.getElementById("cardBox").style.opacity=1;
     animateCard();
-  },3800);
+  },4200);
 };
 
-/* BLAST */
-function blast(){
-  let h=0,s=0;
-
-  const hInt=setInterval(()=>{
-    const el=document.createElement("div");
-    el.className="heart";
-    el.innerHTML="💖";
-    el.style.left=Math.random()*100+"vw";
-    el.style.animationDuration="3s";
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),4000);
-    if(++h>14) clearInterval(hInt);
-  },120);
-
-  const sInt=setInterval(()=>{
-    const el=document.createElement("div");
-    el.className="spark";
-    el.style.left=Math.random()*100+"vw";
-    el.style.animationDuration="2s";
-    document.body.appendChild(el);
-    setTimeout(()=>el.remove(),3000);
-    if(++s>30) clearInterval(sInt);
-  },80);
+/* PAPER BLAST */
+function paperBlast(){
+  for(let i=0;i<40;i++){
+    const p=document.createElement("div");
+    p.className="paper";
+    p.style.left=Math.random()*100+"vw";
+    p.style.background=`hsl(${Math.random()*360},80%,70%)`;
+    p.style.animationDuration=(3+Math.random()*2)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),5000);
+  }
 }
 
-/* TITLE LETTER ANIMATION */
+/* FIRE CRACKERS */
+function fireCrackers(){
+  let count=0;
+  const i=setInterval(()=>{
+    const s=document.createElement("div");
+    s.className="spark";
+    s.style.left=Math.random()*100+"vw";
+    s.style.animationDuration=(2+Math.random()*2)+"s";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),4000);
+    if(++count>60) clearInterval(i);
+  },120);
+}
+
+/* TITLE LETTERS */
 function animateTitle(){
   const el=document.getElementById("titleText");
   const text=el.textContent;
   el.innerHTML="";
+  el.style.visibility="visible";
   [...text].forEach((c,i)=>{
     const span=document.createElement("span");
     span.textContent=c===" "?"\u00A0":c;
@@ -254,7 +261,7 @@ function animateTitle(){
   });
 }
 
-/* CARD LETTER ANIMATION (br safe) */
+/* CARD LETTERS */
 function animateCard(){
   const el=document.getElementById("cardText");
   const nodes=[...el.childNodes];
