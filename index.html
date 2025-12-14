@@ -51,7 +51,7 @@ body{
   to{background-position:-2000px 1000px;}
 }
 
-/* TAP SCREEN */
+/* TAP */
 #start{
   position:fixed;
   inset:0;
@@ -142,10 +142,8 @@ button{
 <div class="stars2"></div>
 <canvas id="fireworks"></canvas>
 
-<!-- TAP -->
 <div id="start"><span>TAP TO START 💖</span></div>
 
-<!-- MAIN -->
 <div id="main">
   <div id="content"></div>
 </div>
@@ -168,7 +166,7 @@ start.onclick=()=>{
   step1();
 };
 
-/* FLOW STEPS */
+/* FLOW */
 function step1(){
   content.innerHTML=`
     <h1>Wait… 🫣</h1>
@@ -201,10 +199,10 @@ function finalWish(){
   `;
   animateLetters("title",0.08);
   setTimeout(()=>animateLetters("msg",0.05),2500);
-  startFireworks();   // 🎆 FIREWORKS START HERE
+  startFireworks();
 }
 
-/* LETTER ANIMATION */
+/* LETTER */
 function animateLetters(id,speed){
   const el=document.getElementById(id);
   const txt=el.innerHTML;
@@ -217,7 +215,7 @@ function animateLetters(id,speed){
   });
 }
 
-/* HEART EFFECT */
+/* HEARTS */
 function hearts(){
   setInterval(()=>{
     const h=document.createElement("div");
@@ -230,7 +228,7 @@ function hearts(){
   },300);
 }
 
-/* FIREWORKS */
+/* 🔥 REALISTIC FIREWORKS ENGINE */
 const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
 resize();
@@ -241,35 +239,64 @@ function resize(){
   canvas.height=innerHeight;
 }
 
+const rockets=[], sparks=[];
+let fwActive=false;
+
 function startFireworks(){
-  setInterval(()=>{
-    const x=Math.random()*canvas.width;
-    const y=Math.random()*canvas.height*0.5;
-    blast(x,y);
-  },800);
+  if(fwActive) return;
+  fwActive=true;
+  setInterval(()=>launchRocket(),900);
 }
 
-function blast(x,y){
-  for(let i=0;i<40;i++){
+function launchRocket(){
+  rockets.push({
+    x:Math.random()*canvas.width,
+    y:canvas.height,
+    vy:-(7+Math.random()*3),
+    explodeY:canvas.height*(0.3+Math.random()*0.3)
+  });
+}
+
+function explode(x,y){
+  const count=80;
+  for(let i=0;i<count;i++){
     const angle=Math.random()*Math.PI*2;
-    const speed=Math.random()*5+2;
-    const life=60;
-    particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life});
+    const speed=Math.random()*4+2;
+    sparks.push({
+      x,y,
+      vx:Math.cos(angle)*speed,
+      vy:Math.sin(angle)*speed,
+      life:80,
+      alpha:1
+    });
   }
 }
 
-const particles=[];
 function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  particles.forEach((p,i)=>{
+  ctx.fillStyle="rgba(0,0,0,0.25)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  rockets.forEach((r,i)=>{
+    r.y+=r.vy;
+    ctx.fillStyle="#fff";
+    ctx.fillRect(r.x,r.y,2,8);
+    if(r.y<=r.explodeY){
+      explode(r.x,r.y);
+      rockets.splice(i,1);
+    }
+  });
+
+  sparks.forEach((p,i)=>{
     p.x+=p.vx;
     p.y+=p.vy;
-    p.vy+=0.05;
+    p.vy+=0.04;
     p.life--;
-    ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
+    p.alpha=p.life/80;
+    ctx.fillStyle=`rgba(255,215,150,${p.alpha})`;
     ctx.fillRect(p.x,p.y,2,2);
-    if(p.life<=0) particles.splice(i,1);
+    if(p.life<=0) sparks.splice(i,1);
   });
+
   requestAnimationFrame(animate);
 }
 animate();
