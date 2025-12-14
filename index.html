@@ -93,9 +93,6 @@ body{
   letter-spacing:3px;
   margin-bottom:24px;
   visibility:hidden;
-  text-shadow:
-    0 0 14px rgba(255,255,255,.25),
-    0 0 40px rgba(180,220,255,.2);
 }
 .title span{
   opacity:0;
@@ -103,8 +100,8 @@ body{
   animation:titleIn .7s ease forwards;
 }
 @keyframes titleIn{
-  from{opacity:0;transform:translateY(24px);filter:blur(4px);}
-  to{opacity:1;transform:translateY(0);filter:blur(0);}
+  from{opacity:0;transform:translateY(24px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
 /* CARD */
@@ -127,17 +124,32 @@ body{
   to{opacity:1;transform:translateY(0);}
 }
 
-/* PAPER CONFETTI */
-.paper{
-  position:fixed;
-  width:8px;
-  height:14px;
-  animation:paperFall linear forwards;
-  z-index:4;
+/* NEXT BUTTON */
+#nextBtn{
+  margin-top:18px;
+  padding:12px 26px;
+  border:none;
+  border-radius:30px;
+  background:#ff5fa2;
+  color:#fff;
+  font-size:15px;
+  cursor:pointer;
+  display:none;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
 }
-@keyframes paperFall{
-  from{transform:translateY(0) rotate(0deg);opacity:1;}
-  to{transform:translateY(120vh) rotate(360deg);opacity:0;}
+
+/* IMAGE */
+#surpriseImg{
+  margin-top:18px;
+  width:260px;
+  border-radius:18px;
+  opacity:0;
+  transform:scale(.9);
+  transition:.8s ease;
+}
+#surpriseImg.show{
+  opacity:1;
+  transform:scale(1);
 }
 
 /* FIREWORK CANVAS */
@@ -166,13 +178,19 @@ body{
       Dear Pagliiii 💕,<br><br>
       On your special day, I just want you to know<br>
       how much you truly mean to me.<br><br>
-      Your smile makes everything brighter,<br>
-      and your presence feels like home.<br><br>
       Stay happy, stay smiling,<br>
       and never forget how special you are ✨<br><br>
       — Always yours 💖
     </div>
   </div>
+
+  <!-- NEXT BUTTON -->
+  <button id="nextBtn">Next 💖</button>
+
+  <!-- IMAGE -->
+  <img id="surpriseImg"
+       src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e"
+       alt="memory">
 </div>
 
 <audio id="music" loop>
@@ -188,7 +206,8 @@ const start=document.getElementById("start");
 const main=document.getElementById("main");
 const music=document.getElementById("music");
 const fireSound=document.getElementById("fireSound");
-fireSound.volume=0.18;
+const nextBtn=document.getElementById("nextBtn");
+const img=document.getElementById("surpriseImg");
 
 /* START */
 start.onclick=()=>{
@@ -196,94 +215,14 @@ start.onclick=()=>{
   main.style.display="flex";
   music.play().catch(()=>{});
 
-  paperBlast();
+  startFireworks();
 
+  setTimeout(animateTitle,2000);
   setTimeout(()=>{
-    startFireworks();
-  },800);
-
-  setTimeout(()=>{
-    animateTitle();
-  },2200);
-
-  setTimeout(()=>{
-    document.getElementById("cardBox").style.opacity=1;
+    cardBox.style.opacity=1;
     animateCard();
   },4200);
 };
-
-/* PAPER BLAST */
-function paperBlast(){
-  for(let i=0;i<40;i++){
-    const p=document.createElement("div");
-    p.className="paper";
-    p.style.left=Math.random()*100+"vw";
-    p.style.background=`hsl(${Math.random()*360},80%,70%)`;
-    p.style.animationDuration=(3+Math.random()*2)+"s";
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),5000);
-  }
-}
-
-/* REALISTIC FIREWORKS */
-const canvas=document.getElementById("fireCanvas");
-const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-
-let rockets=[], sparks=[];
-
-function startFireworks(){
-  setInterval(launchRocket,1400);
-  requestAnimationFrame(loop);
-}
-
-function launchRocket(){
-  rockets.push({
-    x:Math.random()*canvas.width,
-    y:canvas.height,
-    vy:-8,
-    explodeY:canvas.height*(0.25+Math.random()*0.3)
-  });
-}
-
-function explode(x,y){
-  if(Math.random()>0.4){
-    fireSound.cloneNode().play().catch(()=>{});
-  }
-  for(let i=0;i<90;i++){
-    const a=Math.random()*Math.PI*2;
-    const s=Math.random()*4+2;
-    sparks.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:90});
-  }
-}
-
-function loop(){
-  ctx.fillStyle="rgba(0,0,0,0.25)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  rockets.forEach((r,i)=>{
-    r.y+=r.vy;
-    ctx.fillStyle="#fff";
-    ctx.fillRect(r.x,r.y,2,10);
-    if(r.y<=r.explodeY){
-      explode(r.x,r.y);
-      rockets.splice(i,1);
-    }
-  });
-
-  sparks.forEach((p,i)=>{
-    p.x+=p.vx;
-    p.y+=p.vy;
-    p.vy+=0.04;
-    p.life--;
-    ctx.fillStyle=`rgba(255,215,160,${p.life/90})`;
-    ctx.fillRect(p.x,p.y,2,2);
-    if(p.life<=0) sparks.splice(i,1);
-  });
-
-  requestAnimationFrame(loop);
-}
 
 /* TITLE */
 function animateTitle(){
@@ -318,6 +257,76 @@ function animateCard(){
       el.appendChild(document.createElement("br"));
     }
   });
+
+  /* SHOW NEXT BUTTON AFTER TEXT */
+  setTimeout(()=>{
+    nextBtn.style.display="inline-block";
+  }, d*1000 + 500);
+}
+
+/* NEXT BUTTON CLICK */
+nextBtn.onclick=()=>{
+  img.classList.add("show");
+  nextBtn.style.display="none";
+};
+
+/* FIREWORKS (BACKGROUND) */
+const canvas=document.getElementById("fireCanvas");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+let rockets=[], sparks=[];
+
+function startFireworks(){
+  setInterval(()=>{
+    rockets.push({
+      x:Math.random()*canvas.width,
+      y:canvas.height,
+      vy:-8,
+      explodeY:canvas.height*(0.3+Math.random()*0.3)
+    });
+  },1400);
+  requestAnimationFrame(loop);
+}
+
+function explode(x,y){
+  if(Math.random()>0.3){
+    const s=fireSound.cloneNode();
+    s.volume=0.4+Math.random()*0.3;
+    s.play().catch(()=>{});
+  }
+  for(let i=0;i<80;i++){
+    const a=Math.random()*Math.PI*2;
+    const sp=Math.random()*4+2;
+    sparks.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:80});
+  }
+}
+
+function loop(){
+  ctx.fillStyle="rgba(0,0,0,0.25)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  rockets.forEach((r,i)=>{
+    r.y+=r.vy;
+    ctx.fillRect(r.x,r.y,2,10);
+    if(r.y<=r.explodeY){
+      explode(r.x,r.y);
+      rockets.splice(i,1);
+    }
+  });
+
+  sparks.forEach((p,i)=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.vy+=0.04;
+    p.life--;
+    ctx.fillStyle=`rgba(255,215,160,${p.life/80})`;
+    ctx.fillRect(p.x,p.y,2,2);
+    if(p.life<=0) sparks.splice(i,1);
+  });
+
+  requestAnimationFrame(loop);
 }
 </script>
 
