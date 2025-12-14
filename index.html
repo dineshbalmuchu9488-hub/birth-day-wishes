@@ -88,13 +88,12 @@ body{
   padding:20px;
 }
 
-/* TITLE (FIXED FOR MOBILE) */
+/* TITLE */
 .title{
   font-size:38px;
   margin-bottom:24px;
   visibility:hidden;
-
-  white-space:nowrap;      /* 🔥 FORCE ONE LINE */
+  white-space:nowrap;
   word-break:keep-all;
 }
 .title span{
@@ -107,11 +106,9 @@ body{
   to{opacity:1;transform:translateY(0);}
 }
 
-/* MOBILE SIZE FIX */
+/* MOBILE FIX */
 @media (max-width:420px){
-  .title{
-    font-size:30px;        /* 👌 fits perfectly on mobile */
-  }
+  .title{font-size:30px;}
 }
 
 /* CARD */
@@ -169,6 +166,21 @@ body{
   transform:scale(1);
 }
 
+/* HEART ANIMATION */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:14px;
+  color:#ff6fae;
+  opacity:0.8;
+  animation:heartFloat linear forwards;
+  pointer-events:none;
+}
+@keyframes heartFloat{
+  from{transform:translateY(0) scale(1);opacity:0.9;}
+  to{transform:translateY(-120vh) scale(1.4);opacity:0;}
+}
+
 /* FIREWORK CANVAS */
 #fireCanvas{
   position:fixed;
@@ -195,12 +207,10 @@ body{
     <div class="card" id="cardBox">
       <div id="cardText">
         Dear Pagliiii 💕,<br><br>
-        On your special day,Wishing you the 
-        loveliest birthday ever. 🎂✨ <br>
-        May Mahadev bless you with lots of happiness. 🌸.<br><br>
-       stay smiling,<br>
-        and Always be happy — you deserve every smile 🥰
-        my dearest pagliiiiii✨<br><br>
+        On your special day, wishing you the loveliest birthday ever 🎂✨<br>
+        May Mahadev bless you with lots of happiness 🌸<br><br>
+        Stay smiling and always be happy — you deserve every smile 🥰<br><br>
+        My dearest Pagliiii ✨
       </div>
     </div>
 
@@ -229,6 +239,7 @@ start.onclick=()=>{
   main.style.display="block";
   music.play().catch(()=>{});
   startFireworks();
+  startHearts();
 
   setTimeout(animateTitle,1200);
   setTimeout(()=>{
@@ -237,6 +248,7 @@ start.onclick=()=>{
   },3200);
 };
 
+/* TITLE ANIMATION */
 function animateTitle(){
   const el=titleText;
   const t=el.textContent;
@@ -250,6 +262,7 @@ function animateTitle(){
   });
 }
 
+/* CARD TEXT */
 function animateCard(){
   const el=cardText;
   const nodes=[...el.childNodes];
@@ -268,13 +281,27 @@ function animateCard(){
       el.appendChild(document.createElement("br"));
     }
   });
-  setTimeout(()=>nextBtn.style.display="inline-block", d*1000+400);
+  setTimeout(()=>nextBtn.style.display="inline-block",d*1000+400);
 }
 
+/* NEXT */
 nextBtn.onclick=()=>{
   pageWish.style.opacity=0;
   setTimeout(()=>pageImage.classList.add("show"),700);
 };
+
+/* HEARTS */
+function startHearts(){
+  setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.textContent="❤️";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(6+Math.random()*4)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),10000);
+  },700);
+}
 
 /* FIREWORKS */
 const canvas=document.getElementById("fireCanvas");
@@ -291,7 +318,7 @@ function startFireworks(){
       vy:-8,
       ey:canvas.height*(0.3+Math.random()*0.3)
     });
-  },1400);
+  },1600);
   requestAnimationFrame(loop);
 }
 
@@ -301,7 +328,7 @@ function explode(x,y){
     s.volume=0.4+Math.random()*0.3;
     s.play().catch(()=>{});
   }
-  for(let i=0;i<80;i++){
+  for(let i=0;i<70;i++){
     const a=Math.random()*Math.PI*2;
     const sp=Math.random()*4+2;
     sparks.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:80});
@@ -337,7 +364,3 @@ function loop(){
 
 </body>
 </html>
-
-
-
-
