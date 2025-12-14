@@ -43,7 +43,6 @@ body{
   opacity:.6;
 }
 @keyframes moveStars{
-  from{background-position:0 0;}
   to{background-position:-2000px 1000px;}
 }
 
@@ -63,9 +62,7 @@ body{
   animation:pulse 1.6s infinite;
 }
 @keyframes pulse{
-  0%{opacity:.3}
   50%{opacity:1}
-  100%{opacity:.3}
 }
 
 /* MAIN */
@@ -73,7 +70,6 @@ body{
   position:fixed;
   inset:0;
   display:none;
-  z-index:5;
 }
 
 /* PAGE */
@@ -94,7 +90,6 @@ body{
   margin-bottom:24px;
   visibility:hidden;
   white-space:nowrap;
-  word-break:keep-all;
 }
 .title span{
   opacity:0;
@@ -105,16 +100,14 @@ body{
   from{opacity:0;transform:translateY(24px);}
   to{opacity:1;transform:translateY(0);}
 }
-
-/* MOBILE FIX */
-@media (max-width:420px){
+@media(max-width:420px){
   .title{font-size:30px;}
 }
 
 /* CARD */
 .card{
   max-width:340px;
-  background:rgba(255,255,255,0.08);
+  background:rgba(255,255,255,.08);
   border-radius:18px;
   padding:22px;
   backdrop-filter:blur(6px);
@@ -131,8 +124,8 @@ body{
   to{opacity:1;transform:translateY(0);}
 }
 
-/* NEXT BUTTON */
-#nextBtn{
+/* BUTTONS */
+button{
   margin-top:22px;
   padding:12px 28px;
   border:none;
@@ -141,7 +134,6 @@ body{
   color:#fff;
   font-size:15px;
   cursor:pointer;
-  display:none;
 }
 
 /* IMAGE PAGE */
@@ -158,7 +150,7 @@ body{
   border-radius:20px;
   box-shadow:0 25px 60px rgba(0,0,0,.6);
   opacity:0;
-  transform:scale(0.96);
+  transform:scale(.96);
   transition:opacity 2s ease, transform 2s ease;
 }
 #pageImage.show img{
@@ -166,18 +158,30 @@ body{
   transform:scale(1);
 }
 
-/* HEART ANIMATION */
+/* FINAL MESSAGE */
+#finalMsg{
+  margin-top:24px;
+  font-size:16px;
+  line-height:1.6;
+  max-width:320px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:1.5s ease;
+}
+#finalMsg.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+/* HEARTS */
 .heart{
   position:fixed;
   bottom:-20px;
   font-size:14px;
-  color:#ff6fae;
-  opacity:0.8;
   animation:heartFloat linear forwards;
   pointer-events:none;
 }
 @keyframes heartFloat{
-  from{transform:translateY(0) scale(1);opacity:0.9;}
   to{transform:translateY(-120vh) scale(1.4);opacity:0;}
 }
 
@@ -207,10 +211,9 @@ body{
     <div class="card" id="cardBox">
       <div id="cardText">
         Dear Pagliiii 💕,<br><br>
-        On your special day, wishing you the loveliest birthday ever 🎂✨<br>
-        May Mahadev bless you with lots of happiness 🌸<br><br>
-        Stay smiling and always be happy — you deserve every smile 🥰<br><br>
-        My dearest Pagliiii ✨
+        Wishing you the loveliest birthday ever 🎂✨<br>
+        May Mahadev bless you with endless happiness 🌸<br><br>
+        Stay smiling and always be happy 🥰
       </div>
     </div>
 
@@ -220,35 +223,36 @@ body{
   <!-- PAGE 2 -->
   <div class="page" id="pageImage">
     <img src="https://files.catbox.moe/10peuo.jpg" alt="Birthday Cake">
+
+    <div id="finalMsg">
+      No matter where life takes us,<br>
+      this smile of yours will always be my favorite 💖✨
+    </div>
+
+    <button id="replayBtn">Replay 🔁</button>
   </div>
 
 </div>
 
 <audio id="music" loop src="https://files.catbox.moe/f6o9vc.mp3"></audio>
-<audio id="fireSound" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c45b9bb6c.mp3"></audio>
 
 <script>
 const start=document.getElementById("start");
 const main=document.getElementById("main");
 const music=document.getElementById("music");
-const fireSound=document.getElementById("fireSound");
 const nextBtn=document.getElementById("nextBtn");
+const replayBtn=document.getElementById("replayBtn");
+const finalMsg=document.getElementById("finalMsg");
 
 start.onclick=()=>{
   start.style.display="none";
   main.style.display="block";
   music.play().catch(()=>{});
-  startFireworks();
   startHearts();
-
-  setTimeout(animateTitle,1200);
-  setTimeout(()=>{
-    cardBox.style.opacity=1;
-    animateCard();
-  },3200);
+  setTimeout(animateTitle,1000);
+  setTimeout(()=>{cardBox.style.opacity=1; animateCard();},2800);
 };
 
-/* TITLE ANIMATION */
 function animateTitle(){
   const el=titleText;
   const t=el.textContent;
@@ -257,12 +261,11 @@ function animateTitle(){
   [...t].forEach((c,i)=>{
     const s=document.createElement("span");
     s.textContent=c===" "?"\u00A0":c;
-    s.style.animationDelay=(i*0.08)+"s";
+    s.style.animationDelay=i*.08+"s";
     el.appendChild(s);
   });
 }
 
-/* CARD TEXT */
 function animateCard(){
   const el=cardText;
   const nodes=[...el.childNodes];
@@ -275,7 +278,7 @@ function animateCard(){
         s.innerHTML=c===" "?"&nbsp;":c;
         s.style.animationDelay=d+"s";
         el.appendChild(s);
-        d+=0.04;
+        d+=.04;
       });
     }else if(n.nodeName==="BR"){
       el.appendChild(document.createElement("br"));
@@ -284,81 +287,27 @@ function animateCard(){
   setTimeout(()=>nextBtn.style.display="inline-block",d*1000+400);
 }
 
-/* NEXT */
 nextBtn.onclick=()=>{
   pageWish.style.opacity=0;
-  setTimeout(()=>pageImage.classList.add("show"),700);
+  setTimeout(()=>{
+    pageImage.classList.add("show");
+    setTimeout(()=>finalMsg.classList.add("show"),2200);
+  },700);
 };
 
-/* HEARTS */
+replayBtn.onclick=()=>location.reload();
+
 function startHearts(){
   setInterval(()=>{
     const h=document.createElement("div");
     h.className="heart";
     h.textContent="❤️";
     h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=(12+Math.random()*6)+"px";
     h.style.animationDuration=(6+Math.random()*4)+"s";
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),10000);
-  },700);
-}
-
-/* FIREWORKS */
-const canvas=document.getElementById("fireCanvas");
-const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
-let rockets=[],sparks=[];
-
-function startFireworks(){
-  setInterval(()=>{
-    rockets.push({
-      x:Math.random()*canvas.width,
-      y:canvas.height,
-      vy:-8,
-      ey:canvas.height*(0.3+Math.random()*0.3)
-    });
-  },1600);
-  requestAnimationFrame(loop);
-}
-
-function explode(x,y){
-  if(Math.random()>0.4){
-    const s=fireSound.cloneNode();
-    s.volume=0.4+Math.random()*0.3;
-    s.play().catch(()=>{});
-  }
-  for(let i=0;i<70;i++){
-    const a=Math.random()*Math.PI*2;
-    const sp=Math.random()*4+2;
-    sparks.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:80});
-  }
-}
-
-function loop(){
-  ctx.fillStyle="rgba(0,0,0,.25)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  rockets.forEach((r,i)=>{
-    r.y+=r.vy;
-    ctx.fillRect(r.x,r.y,2,10);
-    if(r.y<=r.ey){
-      explode(r.x,r.y);
-      rockets.splice(i,1);
-    }
-  });
-
-  sparks.forEach((p,i)=>{
-    p.x+=p.vx;
-    p.y+=p.vy;
-    p.vy+=.04;
-    p.life--;
-    ctx.fillStyle=`rgba(255,215,160,${p.life/80})`;
-    ctx.fillRect(p.x,p.y,2,2);
-    if(p.life<=0) sparks.splice(i,1);
-  });
-
-  requestAnimationFrame(loop);
+  },800);
 }
 </script>
 
