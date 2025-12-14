@@ -13,6 +13,7 @@
   -webkit-tap-highlight-color:transparent;
   font-family:'Segoe UI',sans-serif;
 }
+
 body{
   width:100vw;
   height:100vh;
@@ -145,15 +146,19 @@ body{
   opacity:1;
   pointer-events:auto;
 }
+
+/* 🔥 SLOW FADE IMAGE */
 #pageImage img{
   width:280px;
   border-radius:20px;
   box-shadow:0 25px 60px rgba(0,0,0,.6);
-  animation:imgIn 1.2s ease forwards;
+  opacity:0;
+  transform:scale(0.96);
+  transition:opacity 2s ease, transform 2s ease;
 }
-@keyframes imgIn{
-  from{opacity:0;transform:scale(.9);}
-  to{opacity:1;transform:scale(1);}
+#pageImage.show img{
+  opacity:1;
+  transform:scale(1);
 }
 
 /* FIREWORK CANVAS */
@@ -175,6 +180,7 @@ body{
 
 <div id="main">
 
+  <!-- PAGE 1 -->
   <div class="page" id="pageWish">
     <div class="title" id="titleText">Happy Birthday Pagliiii 💖</div>
 
@@ -192,6 +198,7 @@ body{
     <button id="nextBtn">Next 💖</button>
   </div>
 
+  <!-- PAGE 2 -->
   <div class="page" id="pageImage">
     <img src="https://files.catbox.moe/10peuo.jpg" alt="Birthday Cake">
   </div>
@@ -310,7 +317,7 @@ function loop(){
     p.y+=p.vy;
     p.vy+=.04;
     p.life--;
-    ctx.fillStyle=`rgba(255,215,160,${p.life/80})`;  /* ✅ FIXED */
+    ctx.fillStyle=`rgba(255,215,160,${p.life/80})`;
     ctx.fillRect(p.x,p.y,2,2);
     if(p.life<=0) sparks.splice(i,1);
   });
