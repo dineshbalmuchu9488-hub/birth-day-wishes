@@ -88,11 +88,14 @@ body{
   padding:20px;
 }
 
-/* TITLE */
+/* TITLE (FIXED FOR MOBILE) */
 .title{
   font-size:38px;
   margin-bottom:24px;
   visibility:hidden;
+
+  white-space:nowrap;      /* 🔥 FORCE ONE LINE */
+  word-break:keep-all;
 }
 .title span{
   opacity:0;
@@ -102,6 +105,13 @@ body{
 @keyframes titleIn{
   from{opacity:0;transform:translateY(24px);}
   to{opacity:1;transform:translateY(0);}
+}
+
+/* MOBILE SIZE FIX */
+@media (max-width:420px){
+  .title{
+    font-size:30px;        /* 👌 fits perfectly on mobile */
+  }
 }
 
 /* CARD */
@@ -146,8 +156,6 @@ body{
   opacity:1;
   pointer-events:auto;
 }
-
-/* 🔥 SLOW FADE IMAGE */
 #pageImage img{
   width:280px;
   border-radius:20px;
