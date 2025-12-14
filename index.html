@@ -14,7 +14,7 @@
   font-family:'Segoe UI',sans-serif;
 }
 
-/* ===== BACKGROUND ===== */
+/* BACKGROUND */
 body{
   width:100vw;
   height:100vh;
@@ -24,7 +24,7 @@ body{
     radial-gradient(circle at top,#1c2a3a,#06080d 60%,#000);
 }
 
-/* ===== STARS ===== */
+/* STARS */
 .stars,.stars2{
   position:fixed;
   inset:0;
@@ -51,7 +51,7 @@ body{
   to{background-position:-2000px 1000px;}
 }
 
-/* ===== TAP ===== */
+/* TAP */
 #start{
   position:fixed;
   inset:0;
@@ -73,7 +73,7 @@ body{
   100%{opacity:.3}
 }
 
-/* ===== MAIN ===== */
+/* MAIN */
 #main{
   position:fixed;
   inset:0;
@@ -83,20 +83,28 @@ body{
   justify-content:center;
   text-align:center;
   padding:20px;
-  z-index:5;
 }
 
-/* ===== TITLE ===== */
+/* TITLE */
 .title{
   font-size:38px;
   letter-spacing:3px;
-  margin-bottom:18px;
+  margin-bottom:24px;
   text-shadow:
     0 0 14px rgba(255,255,255,.25),
     0 0 40px rgba(180,220,255,.2);
 }
+.title span{
+  opacity:0;
+  display:inline-block;
+  animation:titleIn .7s ease forwards;
+}
+@keyframes titleIn{
+  from{opacity:0;transform:translateY(24px);filter:blur(4px);}
+  to{opacity:1;transform:translateY(0);filter:blur(0);}
+}
 
-/* ===== CARD ===== */
+/* CARD */
 .card{
   max-width:340px;
   background:rgba(255,255,255,0.08);
@@ -104,41 +112,32 @@ body{
   padding:22px;
   box-shadow:0 20px 45px rgba(0,0,0,.45);
   backdrop-filter:blur(6px);
+  opacity:0;
 }
-
-/* CARD TEXT */
 .card span{
   opacity:0;
   display:inline-block;
   animation:cardIn .6s ease forwards;
 }
 @keyframes cardIn{
-  from{opacity:0;transform:translateY(18px);}
+  from{opacity:0;transform:translateY(16px);}
   to{opacity:1;transform:translateY(0);}
 }
 
-/* SIGN */
-.sign{
-  margin-top:14px;
-  color:#ffd1e8;
-  font-style:italic;
-}
-
-/* ===== HEARTS ===== */
+/* HEART BLAST */
 .heart{
   position:fixed;
   bottom:-20px;
   font-size:18px;
   animation:heartUp linear forwards;
   pointer-events:none;
-  z-index:2;
 }
 @keyframes heartUp{
-  from{transform:translateY(0) scale(1);opacity:0.9;}
+  from{transform:translateY(0) scale(1);opacity:1;}
   to{transform:translateY(-120vh) scale(1.4);opacity:0;}
 }
 
-/* ===== CRACKER SPARKS ===== */
+/* CRACKER SPARK */
 .spark{
   position:fixed;
   width:3px;
@@ -148,7 +147,6 @@ body{
   box-shadow:0 0 8px gold;
   animation:sparkUp linear forwards;
   pointer-events:none;
-  z-index:2;
 }
 @keyframes sparkUp{
   from{transform:translateY(0);opacity:1;}
@@ -169,9 +167,11 @@ body{
 
 <!-- MAIN -->
 <div id="main">
-  <div class="title">Happy Birthday Pagliiii 💖</div>
+  <div class="title" id="titleText">
+    Happy Birthday Pagliiii 💖
+  </div>
 
-  <div class="card">
+  <div class="card" id="cardBox">
     <div id="cardText">
       Dear Pagliiii 💕,<br><br>
       On your special day, I just want you to know<br>
@@ -180,7 +180,7 @@ body{
       and your presence feels like home.<br><br>
       Stay happy, stay smiling,<br>
       and never forget how special you are ✨<br><br>
-      <span class="sign">— Always yours 💖</span>
+      — Always yours 💖
     </div>
   </div>
 </div>
@@ -194,66 +194,85 @@ const start = document.getElementById("start");
 const main  = document.getElementById("main");
 const music = document.getElementById("music");
 
-/* START */
+/* TAP */
 start.onclick = () => {
-  start.style.display = "none";
-  main.style.display  = "flex";
+  start.style.display="none";
+  main.style.display="flex";
   music.play().catch(()=>{});
-  animateCard();
-  hearts();
-  crackers();
+
+  // 1️⃣ Surprise blast FIRST
+  blast();
+
+  // 2️⃣ Title after blast
+  setTimeout(()=>{
+    animateTitle();
+  },1200);
+
+  // 3️⃣ Card after title
+  setTimeout(()=>{
+    document.getElementById("cardBox").style.opacity=1;
+    animateCard();
+  },3800);
 };
 
-/* CARD ANIMATION (br safe) */
-function animateCard(){
-  const el = document.getElementById("cardText");
-  const nodes = Array.from(el.childNodes);
-  el.innerHTML = "";
-  let delay = 0;
+/* BLAST */
+function blast(){
+  let h=0,s=0;
 
-  nodes.forEach(node=>{
-    if(node.nodeType === Node.TEXT_NODE){
-      [...node.textContent].forEach(char=>{
-        const span = document.createElement("span");
-        span.innerHTML = char === " " ? "&nbsp;" : char;
-        span.style.animationDelay = delay + "s";
-        el.appendChild(span);
-        delay += 0.04;
-      });
-    }
-    else if(node.nodeName === "BR"){
-      el.appendChild(document.createElement("br"));
-    }
-    else{
-      el.appendChild(node);
-    }
+  const hInt=setInterval(()=>{
+    const el=document.createElement("div");
+    el.className="heart";
+    el.innerHTML="💖";
+    el.style.left=Math.random()*100+"vw";
+    el.style.animationDuration="3s";
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),4000);
+    if(++h>14) clearInterval(hInt);
+  },120);
+
+  const sInt=setInterval(()=>{
+    const el=document.createElement("div");
+    el.className="spark";
+    el.style.left=Math.random()*100+"vw";
+    el.style.animationDuration="2s";
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),3000);
+    if(++s>30) clearInterval(sInt);
+  },80);
+}
+
+/* TITLE LETTER ANIMATION */
+function animateTitle(){
+  const el=document.getElementById("titleText");
+  const text=el.textContent;
+  el.innerHTML="";
+  [...text].forEach((c,i)=>{
+    const span=document.createElement("span");
+    span.textContent=c===" "?"\u00A0":c;
+    span.style.animationDelay=(i*0.08)+"s";
+    el.appendChild(span);
   });
 }
 
-/* HEART BACKGROUND */
-function hearts(){
-  setInterval(()=>{
-    const h = document.createElement("div");
-    h.className = "heart";
-    h.innerHTML = "💖";
-    h.style.left = Math.random()*100 + "vw";
-    h.style.animationDuration = (6 + Math.random()*4) + "s";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),10000);
-  },400);
-}
-
-/* CRACKER SPARKS */
-function crackers(){
-  setInterval(()=>{
-    const s = document.createElement("div");
-    s.className = "spark";
-    s.style.left = Math.random()*100 + "vw";
-    s.style.bottom = "0";
-    s.style.animationDuration = (2 + Math.random()*2) + "s";
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),4000);
-  },250);
+/* CARD LETTER ANIMATION (br safe) */
+function animateCard(){
+  const el=document.getElementById("cardText");
+  const nodes=[...el.childNodes];
+  el.innerHTML="";
+  let d=0;
+  nodes.forEach(n=>{
+    if(n.nodeType===3){
+      [...n.textContent].forEach(c=>{
+        const s=document.createElement("span");
+        s.innerHTML=c===" "?"&nbsp;":c;
+        s.style.animationDelay=d+"s";
+        el.appendChild(s);
+        d+=0.04;
+      });
+    }else if(n.nodeName==="BR"){
+      el.appendChild(document.createElement("br"));
+    }
+  });
 }
 </script>
 
