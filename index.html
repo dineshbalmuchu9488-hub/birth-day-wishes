@@ -2,151 +2,167 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Surprise 💖</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Happy Birthday Pagliiii 💖</title>
 
 <style>
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Poppins', sans-serif;
+  -webkit-tap-highlight-color:transparent;
+  font-family:'Segoe UI',sans-serif;
 }
 
 body{
-  background: linear-gradient(135deg,#ffd6e8,#ffeef6);
+  width:100vw;
+  height:100vh;
   overflow:hidden;
+  background:linear-gradient(135deg,#ffd6e8,#ffeef6);
+  color:#444;
 }
 
-.page{
-  width:100%;
-  height:100vh;
-  display:none;
+/* ===== TAP SCREEN ===== */
+#start{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
   align-items:center;
   justify-content:center;
+  z-index:10;
+}
+
+#start span{
+  font-size:22px;
+  letter-spacing:2px;
+  color:#fff;
+  animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+  0%{opacity:.4}
+  50%{opacity:1}
+  100%{opacity:.4}
+}
+
+/* ===== PAGES ===== */
+.page{
+  position:fixed;
+  inset:0;
+  display:none;
   flex-direction:column;
+  align-items:center;
+  justify-content:center;
   text-align:center;
   padding:20px;
 }
 
 .page.active{
   display:flex;
-  animation:fadeIn 1s ease;
+  animation:fadeIn 1.2s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(.95);}
+  to{opacity:1;transform:scale(1);}
 }
 
 h1{
-  font-size:2.2rem;
+  font-size:36px;
   color:#ff4d88;
 }
 
 p{
-  font-size:1.1rem;
-  color:#444;
+  font-size:16px;
   margin-top:15px;
 }
 
 button{
   margin-top:30px;
-  padding:14px 30px;
-  font-size:1rem;
+  padding:14px 28px;
   border:none;
   border-radius:30px;
   background:#ff4d88;
   color:white;
+  font-size:15px;
   cursor:pointer;
-  box-shadow:0 10px 20px rgba(0,0,0,0.2);
-  transition:0.3s;
-}
-
-button:hover{
-  transform:scale(1.05);
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
 }
 
 img{
   width:260px;
   max-width:90%;
   border-radius:20px;
-  margin-top:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  margin-top:25px;
+  box-shadow:0 15px 35px rgba(0,0,0,.25);
   animation:float 3s ease-in-out infinite;
-}
-
-.hearts{
-  position:absolute;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  top:0;
-  left:0;
-}
-
-.heart{
-  position:absolute;
-  color:#ff4d88;
-  font-size:20px;
-  animation:heartFloat 6s linear infinite;
-}
-
-@keyframes fadeIn{
-  from{opacity:0;transform:scale(0.95);}
-  to{opacity:1;transform:scale(1);}
 }
 
 @keyframes float{
   0%,100%{transform:translateY(0);}
-  50%{transform:translateY(-15px);}
+  50%{transform:translateY(-12px);}
 }
 
-@keyframes heartFloat{
-  from{transform:translateY(100vh);}
-  to{transform:translateY(-10vh);}
+/* ===== HEARTS ===== */
+.heart{
+  position:fixed;
+  bottom:-10px;
+  font-size:18px;
+  animation:heartUp linear forwards;
+}
+
+@keyframes heartUp{
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-120vh);opacity:0;}
 }
 </style>
 </head>
 
 <body>
 
-<audio id="music" src="music.mp3"></audio>
-
-<div class="hearts" id="hearts"></div>
+<!-- TAP -->
+<div id="start">
+  <span>TAP TO START 💖</span>
+</div>
 
 <!-- PAGE 1 -->
 <div class="page active">
-  <h1>Hey you 🥰</h1>
-  <p>Someone made something special for you 💝</p>
-  <button onclick="nextPage()">Tap to open 🎁</button>
+  <h1>Hey You 🥰</h1>
+  <p>Someone made something special just for you 💝</p>
+  <button onclick="nextPage()">Open 🎁</button>
 </div>
 
 <!-- PAGE 2 -->
 <div class="page">
   <h1>🎉 Happy Birthday Pagliiii 🎀</h1>
   <p>You make everything cuter 💕</p>
-  <button onclick="nextPage()">Next 💖</button>
+  <button onclick="nextPage()">Next 💗</button>
 </div>
 
 <!-- PAGE 3 -->
 <div class="page">
   <h1>Your Smile 🥹</h1>
   <img src="photo1.jpg">
-  <p>This smile makes my day brighter ✨</p>
+  <p>This smile makes my world brighter ✨</p>
   <button onclick="nextPage()">Next 📸</button>
 </div>
 
 <!-- PAGE 4 -->
 <div class="page">
-  <h1>So Special 💗</h1>
+  <h1>So Special 💖</h1>
   <img src="photo2.jpg">
-  <p>Every picture with you is my favorite 🧸</p>
+  <p>Every moment with you feels magical 🧸</p>
   <button onclick="nextPage()">Next 💌</button>
 </div>
 
 <!-- PAGE 5 -->
 <div class="page">
-  <h1>Message for You 💖</h1>
+  <h1>Message For You 💞</h1>
   <p>
-    You are not just special…<br>
-    you are my happy place 🥺💞<br>
-    Stay cute. Stay smiling. Always.
+    Under the same sky, you make every moment special 💕<br>
+    May Mahadev bless you with happiness<br>
+    and keep your smile forever 🌸
   </p>
   <button onclick="nextPage()">Final 🎂</button>
 </div>
@@ -154,32 +170,45 @@ img{
 <!-- PAGE 6 -->
 <div class="page">
   <h1>🎂 Happiest Birthday 🎉</h1>
-  <p>Sending you unlimited hugs 🤗💕</p>
+  <p>Sending you unlimited hugs 🤗💖</p>
   <button onclick="location.reload()">Replay 🔁</button>
 </div>
 
+<!-- MUSIC -->
+<audio id="music" loop>
+  <source src="https://files.catbox.moe/f6o9vc.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-let pages = document.querySelectorAll(".page");
-let current = 0;
+const start=document.getElementById("start");
+const pages=document.querySelectorAll(".page");
+const music=document.getElementById("music");
+let current=0;
+
+start.addEventListener("click",()=>{
+  start.style.display="none";
+  music.play().catch(()=>{});
+  heartEffect();
+});
 
 function nextPage(){
   pages[current].classList.remove("active");
   current++;
-  if(current < pages.length){
+  if(current<pages.length){
     pages[current].classList.add("active");
   }
-  document.getElementById("music").play();
 }
 
-// hearts
-const heartBox = document.getElementById("hearts");
-for(let i=0;i<25;i++){
-  let h = document.createElement("div");
-  h.className="heart";
-  h.innerHTML="💖";
-  h.style.left=Math.random()*100+"%";
-  h.style.animationDuration=(3+Math.random()*3)+"s";
-  heartBox.appendChild(h);
+function heartEffect(){
+  setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="💖";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(5+Math.random()*3)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),9000);
+  },300);
 }
 </script>
 
