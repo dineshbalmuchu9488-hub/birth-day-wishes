@@ -51,7 +51,7 @@ body{
   to{background-position:-2000px 1000px;}
 }
 
-/* ===== TAP TO START ===== */
+/* ===== TAP ===== */
 #start{
   position:fixed;
   inset:0;
@@ -83,6 +83,7 @@ body{
   justify-content:center;
   text-align:center;
   padding:20px;
+  z-index:5;
 }
 
 /* ===== TITLE ===== */
@@ -105,22 +106,15 @@ body{
   backdrop-filter:blur(6px);
 }
 
-/* CARD TEXT ANIMATION */
+/* CARD TEXT */
 .card span{
   opacity:0;
   display:inline-block;
   animation:cardIn .6s ease forwards;
 }
-
 @keyframes cardIn{
-  from{
-    opacity:0;
-    transform:translateY(18px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+  from{opacity:0;transform:translateY(18px);}
+  to{opacity:1;transform:translateY(0);}
 }
 
 /* SIGN */
@@ -128,6 +122,37 @@ body{
   margin-top:14px;
   color:#ffd1e8;
   font-style:italic;
+}
+
+/* ===== HEARTS ===== */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  font-size:18px;
+  animation:heartUp linear forwards;
+  pointer-events:none;
+  z-index:2;
+}
+@keyframes heartUp{
+  from{transform:translateY(0) scale(1);opacity:0.9;}
+  to{transform:translateY(-120vh) scale(1.4);opacity:0;}
+}
+
+/* ===== CRACKER SPARKS ===== */
+.spark{
+  position:fixed;
+  width:3px;
+  height:3px;
+  background:gold;
+  border-radius:50%;
+  box-shadow:0 0 8px gold;
+  animation:sparkUp linear forwards;
+  pointer-events:none;
+  z-index:2;
+}
+@keyframes sparkUp{
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-100vh);opacity:0;}
 }
 </style>
 </head>
@@ -149,16 +174,12 @@ body{
   <div class="card">
     <div id="cardText">
       Dear Pagliiii 💕,<br><br>
-
       On your special day, I just want you to know<br>
       how much you truly mean to me.<br><br>
-
       Your smile makes everything brighter,<br>
       and your presence feels like home.<br><br>
-
       Stay happy, stay smiling,<br>
       and never forget how special you are ✨<br><br>
-
       <span class="sign">— Always yours 💖</span>
     </div>
   </div>
@@ -173,32 +194,66 @@ const start = document.getElementById("start");
 const main  = document.getElementById("main");
 const music = document.getElementById("music");
 
-/* TAP START */
+/* START */
 start.onclick = () => {
   start.style.display = "none";
   main.style.display  = "flex";
   music.play().catch(()=>{});
   animateCard();
+  hearts();
+  crackers();
 };
 
-/* CARD LETTER BY LETTER */
+/* CARD ANIMATION (br safe) */
 function animateCard(){
   const el = document.getElementById("cardText");
-  const html = el.innerHTML;
+  const nodes = Array.from(el.childNodes);
   el.innerHTML = "";
-
   let delay = 0;
-  html.split("").forEach(char=>{
-    if(char === "<"){
-      el.innerHTML += "<br>";
-      return;
+
+  nodes.forEach(node=>{
+    if(node.nodeType === Node.TEXT_NODE){
+      [...node.textContent].forEach(char=>{
+        const span = document.createElement("span");
+        span.innerHTML = char === " " ? "&nbsp;" : char;
+        span.style.animationDelay = delay + "s";
+        el.appendChild(span);
+        delay += 0.04;
+      });
     }
-    const span = document.createElement("span");
-    span.innerHTML = char === " " ? "&nbsp;" : char;
-    span.style.animationDelay = delay + "s";
-    el.appendChild(span);
-    delay += 0.04;
+    else if(node.nodeName === "BR"){
+      el.appendChild(document.createElement("br"));
+    }
+    else{
+      el.appendChild(node);
+    }
   });
+}
+
+/* HEART BACKGROUND */
+function hearts(){
+  setInterval(()=>{
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "💖";
+    h.style.left = Math.random()*100 + "vw";
+    h.style.animationDuration = (6 + Math.random()*4) + "s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),10000);
+  },400);
+}
+
+/* CRACKER SPARKS */
+function crackers(){
+  setInterval(()=>{
+    const s = document.createElement("div");
+    s.className = "spark";
+    s.style.left = Math.random()*100 + "vw";
+    s.style.bottom = "0";
+    s.style.animationDuration = (2 + Math.random()*2) + "s";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),4000);
+  },250);
 }
 </script>
 
