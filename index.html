@@ -76,7 +76,7 @@ body{
   z-index:5;
 }
 
-/* PAGE COMMON */
+/* PAGE */
 .page{
   position:absolute;
   inset:0;
@@ -86,18 +86,12 @@ body{
   justify-content:center;
   text-align:center;
   padding:20px;
-  transition:opacity .8s ease, transform .8s ease;
-}
-
-/* PAGE 1 – WISH */
-#pageWish{
-  opacity:1;
+  transition:.8s ease;
 }
 
 /* TITLE */
 .title{
   font-size:38px;
-  letter-spacing:3px;
   margin-bottom:24px;
   visibility:hidden;
 }
@@ -117,8 +111,8 @@ body{
   background:rgba(255,255,255,0.08);
   border-radius:18px;
   padding:22px;
-  box-shadow:0 20px 45px rgba(0,0,0,.45);
   backdrop-filter:blur(6px);
+  box-shadow:0 20px 45px rgba(0,0,0,.45);
   opacity:0;
 }
 .card span{
@@ -144,21 +138,24 @@ body{
   display:none;
 }
 
-/* PAGE 2 – IMAGE */
+/* IMAGE PAGE */
 #pageImage{
   opacity:0;
   pointer-events:none;
-  transform:scale(1.05);
 }
 #pageImage.show{
   opacity:1;
   pointer-events:auto;
-  transform:scale(1);
 }
 #pageImage img{
   width:280px;
   border-radius:20px;
   box-shadow:0 25px 60px rgba(0,0,0,.6);
+  animation:imgIn 1.2s ease forwards;
+}
+@keyframes imgIn{
+  from{opacity:0;transform:scale(.9);}
+  to{opacity:1;transform:scale(1);}
 }
 
 /* FIREWORK CANVAS */
@@ -166,7 +163,6 @@ body{
   position:fixed;
   inset:0;
   pointer-events:none;
-  z-index:2;
 }
 </style>
 </head>
@@ -201,8 +197,8 @@ body{
 
   <!-- PAGE 2 -->
   <div class="page" id="pageImage">
-    <img src="https://raw.githubusercontent.com/dineshbalmuchu9488/dineshbalmuchu9488-nub/main/images/Lucid_Realism_A_cute_romantic_birthday_cake_with_soft_pink_and_2.jpg
-">
+    <img src="https://raw.githubusercontent.com/dineshbalmuchu9488/dineshbalmuchu9488-nub/main/Lucid_Realism_A_cute_romantic_birthday_cake_with_soft_pink_and_2.jpg"
+         alt="Birthday Cake">
   </div>
 
 </div>
@@ -222,13 +218,11 @@ const music=document.getElementById("music");
 const fireSound=document.getElementById("fireSound");
 const nextBtn=document.getElementById("nextBtn");
 
-/* START */
 start.onclick=()=>{
   start.style.display="none";
   main.style.display="block";
   music.play().catch(()=>{});
   startFireworks();
-
   setTimeout(animateTitle,1200);
   setTimeout(()=>{
     cardBox.style.opacity=1;
@@ -236,13 +230,12 @@ start.onclick=()=>{
   },3200);
 };
 
-/* TITLE */
 function animateTitle(){
   const el=document.getElementById("titleText");
-  const text=el.textContent;
+  const t=el.textContent;
   el.innerHTML="";
   el.style.visibility="visible";
-  [...text].forEach((c,i)=>{
+  [...t].forEach((c,i)=>{
     const s=document.createElement("span");
     s.textContent=c===" "?"\u00A0":c;
     s.style.animationDelay=(i*0.08)+"s";
@@ -250,7 +243,6 @@ function animateTitle(){
   });
 }
 
-/* CARD */
 function animateCard(){
   const el=document.getElementById("cardText");
   const nodes=[...el.childNodes];
@@ -269,18 +261,14 @@ function animateCard(){
       el.appendChild(document.createElement("br"));
     }
   });
-
-  setTimeout(()=> nextBtn.style.display="inline-block", d*1000 + 400);
+  setTimeout(()=>nextBtn.style.display="inline-block", d*1000+400);
 }
 
-/* NEXT PAGE */
 nextBtn.onclick=()=>{
   document.getElementById("pageWish").style.opacity=0;
-  document.getElementById("pageWish").style.pointerEvents="none";
-
   setTimeout(()=>{
     document.getElementById("pageImage").classList.add("show");
-  },800);
+  },700);
 };
 
 /* FIREWORKS */
@@ -288,20 +276,13 @@ const canvas=document.getElementById("fireCanvas");
 const ctx=canvas.getContext("2d");
 canvas.width=innerWidth;
 canvas.height=innerHeight;
-let rockets=[], sparks=[];
-
+let rockets=[],sparks=[];
 function startFireworks(){
   setInterval(()=>{
-    rockets.push({
-      x:Math.random()*canvas.width,
-      y:canvas.height,
-      vy:-8,
-      explodeY:canvas.height*(0.3+Math.random()*0.3)
-    });
+    rockets.push({x:Math.random()*canvas.width,y:canvas.height,vy:-8,ey:canvas.height*(0.3+Math.random()*0.3)});
   },1400);
   requestAnimationFrame(loop);
 }
-
 function explode(x,y){
   if(Math.random()>0.4){
     const s=fireSound.cloneNode();
@@ -314,37 +295,26 @@ function explode(x,y){
     sparks.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:80});
   }
 }
-
 function loop(){
-  ctx.fillStyle="rgba(0,0,0,0.25)";
+  ctx.fillStyle="rgba(0,0,0,.25)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
-
   rockets.forEach((r,i)=>{
     r.y+=r.vy;
     ctx.fillRect(r.x,r.y,2,10);
-    if(r.y<=r.explodeY){
+    if(r.y<=r.ey){
       explode(r.x,r.y);
       rockets.splice(i,1);
     }
   });
-
   sparks.forEach((p,i)=>{
-    p.x+=p.vx;
-    p.y+=p.vy;
-    p.vy+=0.04;
-    p.life--;
+    p.x+=p.vx; p.y+=p.vy; p.vy+=.04; p.life--;
     ctx.fillStyle=`rgba(255,215,160,${p.life/80})`;
     ctx.fillRect(p.x,p.y,2,2);
     if(p.life<=0) sparks.splice(i,1);
   });
-
   requestAnimationFrame(loop);
 }
 </script>
 
 </body>
 </html>
-
-
-
-
