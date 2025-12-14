@@ -13,7 +13,7 @@
   -webkit-tap-highlight-color:transparent;
 }
 
-/* ===== BACKGROUND SKY ===== */
+/* BACKGROUND */
 body{
   width:100vw;
   height:100vh;
@@ -24,11 +24,12 @@ body{
     radial-gradient(circle at top,#1c2a3a,#06080d 60%,#000);
 }
 
-/* ===== STAR LAYERS ===== */
+/* STARS */
 .stars,.stars2{
   position:fixed;
   inset:0;
   pointer-events:none;
+  z-index:1;
 }
 .stars{
   background-image:
@@ -51,7 +52,7 @@ body{
   to{background-position:-2000px 1000px;}
 }
 
-/* ===== TAP SCREEN ===== */
+/* TAP */
 #start{
   position:fixed;
   inset:0;
@@ -73,7 +74,7 @@ body{
   100%{opacity:.3}
 }
 
-/* ===== OVERLAY ===== */
+/* OVERLAY */
 .overlay{
   position:fixed;
   inset:0;
@@ -84,9 +85,10 @@ body{
     rgba(0,0,0,.9)
   );
   pointer-events:none;
+  z-index:2;
 }
 
-/* ===== MAIN CONTENT ===== */
+/* MAIN */
 #main{
   position:fixed;
   inset:0;
@@ -95,14 +97,15 @@ body{
   align-items:center;
   justify-content:center;
   text-align:center;
-  z-index:3;
+  z-index:5;
   padding:20px;
 }
 
-/* ===== TEXT ===== */
+/* TEXT */
 .title{
   font-size:42px;
   letter-spacing:4px;
+  animation:titleIn 2.6s ease forwards;
   text-shadow:
     0 0 14px rgba(255,255,255,.25),
     0 0 45px rgba(180,220,255,.2);
@@ -112,9 +115,20 @@ body{
   font-size:18px;
   letter-spacing:1px;
   color:#b9c9d8;
+  animation:subIn 2s ease forwards;
+  animation-delay:1.6s;
 }
 
-/* ===== FLOATING DUST ===== */
+@keyframes titleIn{
+  from{opacity:0;transform:translateY(40px) scale(.96);filter:blur(6px);}
+  to{opacity:1;transform:translateY(0) scale(1);filter:blur(0);}
+}
+@keyframes subIn{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* PARTICLES */
 .particle{
   position:fixed;
   bottom:-10px;
@@ -123,13 +137,14 @@ body{
   background:rgba(255,255,255,.8);
   box-shadow:0 0 8px rgba(200,220,255,.8);
   animation:float linear forwards;
+  z-index:3;
 }
 @keyframes float{
   from{transform:translateY(0);opacity:1;}
   to{transform:translateY(-120vh);opacity:0;}
 }
 
-/* ===== FIREWORK CANVAS ===== */
+/* FIREWORKS */
 #fireworks{
   position:fixed;
   inset:0;
@@ -145,30 +160,23 @@ body{
 <div class="stars2"></div>
 <canvas id="fireworks"></canvas>
 
-<!-- TAP -->
-<div id="start">
-  <span>TAP TO START</span>
-</div>
-
+<div id="start"><span>TAP TO START</span></div>
 <div class="overlay"></div>
 
-<!-- MAIN -->
 <div id="main">
   <div class="title">HAPPY BIRTHDAY PAGLIIII 🫰💖</div>
   <div class="subtitle">
     Under the same sky, you make every moment special 💖<br>
-    May Mahadev bless you with lots of happiness and keep you always smiling ✨
+    May Mahadev bless you with happiness and keep you smiling always ✨
   </div>
 </div>
 
-<!-- MUSIC -->
 <audio id="music" loop>
-  <source src="https://files.catbox.moe/f6o9vc.mp3" type="audio/mpeg">
+  <source src="https://files.catbox.moe/f6o9vc.mp3">
 </audio>
 
-<!-- FIRECRACKER SOUND -->
-<audio id="blastSound" preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c45b9bb6c.mp3" type="audio/mpeg">
+<audio id="blastSound">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7c45b9bb6c.mp3">
 </audio>
 
 <script>
@@ -176,104 +184,89 @@ const start=document.getElementById("start");
 const main=document.getElementById("main");
 const music=document.getElementById("music");
 const blastSound=document.getElementById("blastSound");
+blastSound.volume=0.25;
 
-blastSound.volume = 0.25; // soft realistic sound
-
-start.addEventListener("click",()=>{
+/* TAP */
+start.onclick=()=>{
   start.style.display="none";
   main.style.display="flex";
   music.play().catch(()=>{});
-  startParticles();
-  startFireworks();
-});
+  particles();
+  initFireworks();
+};
 
-/* FLOATING DUST */
-function startParticles(){
+/* PARTICLES */
+function particles(){
   setInterval(()=>{
     const p=document.createElement("div");
     p.className="particle";
     p.style.left=Math.random()*100+"vw";
     p.style.animationDuration=(6+Math.random()*4)+"s";
     document.body.appendChild(p);
-    setTimeout(()=>p.remove(),10000);
-  },220);
+    setTimeout(()=>p.remove(),9000);
+  },300);
 }
 
-/* 🔥 REALISTIC FIREWORKS */
+/* FIREWORKS (START ONLY AFTER TAP) */
 const canvas=document.getElementById("fireworks");
 const ctx=canvas.getContext("2d");
-resize();
-window.addEventListener("resize",resize);
+canvas.width=innerWidth;
+canvas.height=innerHeight;
 
-function resize(){
-  canvas.width=innerWidth;
-  canvas.height=innerHeight;
+let rockets=[], sparks=[], fwOn=false;
+
+function initFireworks(){
+  fwOn=true;
+  setInterval(()=>launch(),1200);
+  requestAnimationFrame(loop);
 }
 
-const rockets=[], sparks=[];
-
-function startFireworks(){
-  setInterval(launchRocket,1200);
-}
-
-function launchRocket(){
+function launch(){
   rockets.push({
     x:Math.random()*canvas.width,
     y:canvas.height,
-    vy:-(7+Math.random()*3),
+    vy:-8,
     explodeY:canvas.height*(0.3+Math.random()*0.3)
   });
 }
 
 function explode(x,y){
-  // 🔊 play blast sound slowly & randomly
-  if(Math.random() > 0.4){
-    const s = blastSound.cloneNode();
-    s.volume = 0.2 + Math.random()*0.15;
-    s.play().catch(()=>{});
+  if(Math.random()>0.5){
+    blastSound.cloneNode().play().catch(()=>{});
   }
-
-  for(let i=0;i<90;i++){
-    const angle=Math.random()*Math.PI*2;
-    const speed=Math.random()*4+2;
-    sparks.push({
-      x,y,
-      vx:Math.cos(angle)*speed,
-      vy:Math.sin(angle)*speed,
-      life:90,
-      alpha:1
-    });
+  for(let i=0;i<70;i++){
+    const a=Math.random()*Math.PI*2;
+    const s=Math.random()*4+2;
+    sparks.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:80});
   }
 }
 
-function animate(){
+function loop(){
+  if(!fwOn) return;
   ctx.fillStyle="rgba(0,0,0,0.25)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
   rockets.forEach((r,i)=>{
     r.y+=r.vy;
-    ctx.fillStyle="#fff";
-    ctx.fillRect(r.x,r.y,2,10);
+    ctx.fillRect(r.x,r.y,2,8);
     if(r.y<=r.explodeY){
       explode(r.x,r.y);
       rockets.splice(i,1);
     }
   });
 
-  sparks.forEach((s,i)=>{
-    s.x+=s.vx;
-    s.y+=s.vy;
-    s.vy+=0.04;
-    s.life--;
-    s.alpha=s.life/90;
-    ctx.fillStyle=`rgba(255,215,160,${s.alpha})`;
-    ctx.fillRect(s.x,s.y,2,2);
-    if(s.life<=0) sparks.splice(i,1);
+  sparks.forEach((p,i)=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.vy+=0.04;
+    p.life--;
+    ctx.fillStyle=`rgba(255,215,160,${p.life/80})`;
+    ctx.fillRect(p.x,p.y,2,2);
+    if(p.life<=0) sparks.splice(i,1);
   });
 
-  requestAnimationFrame(animate);
+  requestAnimationFrame(loop);
 }
-animate();
 </script>
 
 </body>
