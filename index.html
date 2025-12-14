@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Happy Birthday Pagliiii 💖</title>
 
 <style>
@@ -15,7 +14,7 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
   font-family:'Segoe UI',sans-serif;
 }
 
-/* ===== BACKGROUND ===== */
+/* BACKGROUND */
 body{
   width:100vw;
   height:100vh;
@@ -25,13 +24,12 @@ body{
     radial-gradient(circle at top,#1c2a3a,#06080d 60%,#000);
 }
 
-/* ===== STARS ===== */
+/* STARS */
 .stars,.stars2{
   position:fixed;
   inset:0;
   pointer-events:none;
 }
-
 .stars{
   background-image:
     radial-gradient(1px 1px at 20px 30px,#fff,transparent),
@@ -40,7 +38,6 @@ body{
     radial-gradient(1px 1px at 300px 220px,#aaa,transparent);
   animation:moveStars 120s linear infinite;
 }
-
 .stars2{
   background-image:
     radial-gradient(2px 2px at 60px 100px,#fff,transparent),
@@ -49,13 +46,12 @@ body{
   animation:moveStars 180s linear infinite;
   opacity:.6;
 }
-
 @keyframes moveStars{
   from{background-position:0 0;}
   to{background-position:-2000px 1000px;}
 }
 
-/* ===== TAP SCREEN ===== */
+/* TAP SCREEN */
 #start{
   position:fixed;
   inset:0;
@@ -65,34 +61,19 @@ body{
   justify-content:center;
   z-index:10;
 }
-
 #start span{
   font-size:22px;
   letter-spacing:3px;
   color:#aaa;
   animation:pulse 1.6s infinite;
 }
-
 @keyframes pulse{
   0%{opacity:.3}
   50%{opacity:1}
   100%{opacity:.3}
 }
 
-/* ===== OVERLAY ===== */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:linear-gradient(
-    180deg,
-    rgba(0,0,0,.85),
-    rgba(0,0,0,.25),
-    rgba(0,0,0,.9)
-  );
-  pointer-events:none;
-}
-
-/* ===== MAIN ===== */
+/* MAIN */
 #main{
   position:fixed;
   inset:0;
@@ -101,63 +82,42 @@ body{
   align-items:center;
   justify-content:center;
   text-align:center;
-  z-index:3;
   padding:20px;
 }
 
-/* ===== TEXT ===== */
-.title{
-  font-size:40px;
-  letter-spacing:4px;
-  text-shadow:
-    0 0 14px rgba(255,255,255,.25),
-    0 0 45px rgba(180,220,255,.2);
+/* TEXT */
+h1{font-size:34px;}
+p{margin-top:15px;font-size:18px;color:#cdd8e3;}
+button{
+  margin-top:30px;
+  padding:14px 30px;
+  border:none;
+  border-radius:30px;
+  background:#ff5fa2;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
 }
 
-.subtitle{
-  margin-top:18px;
-  font-size:18px;
-  letter-spacing:1px;
-  color:#b9c9d8;
-}
-
-/* ===== LETTER ANIMATION ===== */
+/* LETTER ANIMATION */
 .letter span{
   opacity:0;
   display:inline-block;
   animation:letterIn .7s ease forwards;
 }
-
 @keyframes letterIn{
-  from{
-    opacity:0;
-    transform:translateY(26px);
-    filter:blur(6px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-    filter:blur(0);
-  }
+  from{opacity:0;transform:translateY(26px);filter:blur(6px);}
+  to{opacity:1;transform:translateY(0);filter:blur(0);}
 }
 
-/* ===== EXTRA MESSAGE ===== */
-.extra-msg{
-  margin-top:30px;
-  font-size:17px;
-  color:#ffd1e8;
-  line-height:1.5;
-}
-
-/* ===== HEARTS ===== */
+/* HEARTS */
 .heart{
   position:fixed;
   bottom:-20px;
   font-size:18px;
   animation:heartUp linear forwards;
-  pointer-events:none;
 }
-
 @keyframes heartUp{
   from{transform:translateY(0) scale(1);opacity:1;}
   to{transform:translateY(-120vh) scale(1.4);opacity:0;}
@@ -171,29 +131,13 @@ body{
 <div class="stars2"></div>
 
 <!-- TAP -->
-<div id="start">
-  <span>TAP TO START</span>
-</div>
-
-<div class="overlay"></div>
+<div id="start"><span>TAP TO START 💖</span></div>
 
 <!-- MAIN -->
 <div id="main">
-  <div class="title letter" id="titleText">
-    HAPPY BIRTHDAY PAGLIIII 🫰💖
-  </div>
-
-  <div class="subtitle">
-    Under the same sky, you make every moment special 💖
-  </div>
-
-  <div class="subtitle letter extra-msg" id="extraText">
-    You are my favorite reason to smile every day 💕<br>
-    May Mahadev bless you with happiness and keep you smiling always ✨
-  </div>
+  <div id="content"></div>
 </div>
 
-<!-- MUSIC -->
 <audio id="music" loop>
   <source src="https://files.catbox.moe/f6o9vc.mp3" type="audio/mpeg">
 </audio>
@@ -201,41 +145,78 @@ body{
 <script>
 const start=document.getElementById("start");
 const main=document.getElementById("main");
+const content=document.getElementById("content");
 const music=document.getElementById("music");
 
-/* ===== TAP START ===== */
-start.addEventListener("click",()=>{
+start.onclick=()=>{
   start.style.display="none";
   main.style.display="flex";
   music.play().catch(()=>{});
-  startHearts();
-});
+  hearts();
+  step1();
+};
 
-/* ===== LETTER ANIMATION FUNCTION ===== */
-function animateText(el,delayStart,speed){
-  const html = el.innerHTML;
-  el.innerHTML="";
-  let delay=delayStart;
-
-  html.split("").forEach(char=>{
-    if(char === "<"){
-      el.innerHTML += "<br>";
-      return;
-    }
-    const span=document.createElement("span");
-    span.innerHTML = char===" "?"&nbsp;":char;
-    span.style.animationDelay = delay+"s";
-    el.appendChild(span);
-    delay += speed;
+function animateText(text,delay=0.06){
+  content.innerHTML="";
+  [...text].forEach((c,i)=>{
+    const s=document.createElement("span");
+    s.className="letter";
+    s.innerHTML=c===" "?"&nbsp;":c;
+    s.style.animationDelay=(i*delay)+"s";
+    content.appendChild(s);
   });
 }
 
-/* START LETTER ANIMATIONS */
-animateText(document.getElementById("titleText"),0.3,0.08);
-animateText(document.getElementById("extraText"),3.5,0.06);
+function step1(){
+  content.innerHTML=`
+    <h1>Wait… 🫣</h1>
+    <p>I planned something special for you 💖</p>
+    <button onclick="step2()">What is it? 🤭</button>
+  `;
+}
 
-/* ===== HEART EFFECT ===== */
-function startHearts(){
+function step2(){
+  content.innerHTML=`
+    <h1>Hey Pagliiii 💕</h1>
+    <p>I have something for you…</p>
+    <button onclick="step3()">Show me 🥺</button>
+  `;
+}
+
+function step3(){
+  content.innerHTML=`
+    <p>Something made with heart 💖</p>
+    <p>Something only for you ✨</p>
+    <p>Something to make you smile 🥹</p>
+    <button onclick="finalWish()">Now tell me 😍</button>
+  `;
+}
+
+function finalWish(){
+  content.innerHTML=`
+    <h1 class="letter" id="title">HAPPY BIRTHDAY PAGLIIII 🫰💖</h1>
+    <p class="letter" id="msg">
+      You are my favorite reason to smile every day 💕<br>
+      May Mahadev bless you with happiness always ✨
+    </p>
+  `;
+  animateLetters("title",0.08);
+  setTimeout(()=>animateLetters("msg",0.05),2500);
+}
+
+function animateLetters(id,speed){
+  const el=document.getElementById(id);
+  const txt=el.innerHTML;
+  el.innerHTML="";
+  [...txt].forEach((c,i)=>{
+    const s=document.createElement("span");
+    s.innerHTML=c===" "?"&nbsp;":c;
+    s.style.animationDelay=(i*speed)+"s";
+    el.appendChild(s);
+  });
+}
+
+function hearts(){
   setInterval(()=>{
     const h=document.createElement("div");
     h.className="heart";
