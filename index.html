@@ -6,28 +6,15 @@
 <title>Happy Birthday Pagliiii 🫰</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-  font-family:'Segoe UI',sans-serif;
-}
-
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;font-family:'Segoe UI',sans-serif;}
 body{
-  width:100vw;
-  height:100vh;
-  overflow:hidden;
+  width:100vw;height:100vh;overflow:hidden;
   background:radial-gradient(circle at top,#1c2a3a,#06080d 60%,#000);
   color:#fff;
 }
 
 /* STARS */
-.stars,.stars2{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
+.stars,.stars2{position:fixed;inset:0;pointer-events:none;}
 .stars{
   background-image:
     radial-gradient(1px 1px at 20px 30px,#fff,transparent),
@@ -42,162 +29,80 @@ body{
   animation:moveStars 180s linear infinite;
   opacity:.6;
 }
-@keyframes moveStars{
-  to{background-position:-2000px 1000px;}
-}
+@keyframes moveStars{to{background-position:-2000px 1000px;}}
 
 /* TAP */
 #start{
-  position:fixed;
-  inset:0;
-  background:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:10;
+  position:fixed;inset:0;background:#000;
+  display:flex;align-items:center;justify-content:center;z-index:10;
 }
-#start span{
-  font-size:22px;
-  letter-spacing:3px;
-  animation:pulse 1.6s infinite;
-}
-@keyframes pulse{
-  50%{opacity:1}
-}
+#start span{font-size:22px;letter-spacing:3px;animation:pulse 1.6s infinite;}
+@keyframes pulse{50%{opacity:1}}
 
 /* MAIN */
-#main{
-  position:fixed;
-  inset:0;
-  display:none;
-}
-
-/* PAGE */
+#main{position:fixed;inset:0;display:none;}
 .page{
-  position:absolute;
-  inset:0;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:20px;
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:20px;
+  transition:.8s ease;
 }
 
 /* TITLE */
-.title{
-  font-size:38px;
-  margin-bottom:24px;
-  visibility:hidden;
-  white-space:nowrap;
-}
-.title span{
-  opacity:0;
-  display:inline-block;
-  animation:titleIn .7s ease forwards;
-}
-@keyframes titleIn{
-  from{opacity:0;transform:translateY(24px);}
-  to{opacity:1;transform:translateY(0);}
-}
-@media(max-width:420px){
-  .title{font-size:30px;}
-}
+.title{font-size:38px;margin-bottom:24px;visibility:hidden;white-space:nowrap;}
+.title span{opacity:0;display:inline-block;animation:titleIn .7s ease forwards;}
+@keyframes titleIn{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@media(max-width:420px){.title{font-size:30px;}}
 
 /* CARD */
 .card{
-  max-width:340px;
-  background:rgba(255,255,255,.08);
-  border-radius:18px;
-  padding:22px;
+  max-width:340px;background:rgba(255,255,255,.08);
+  border-radius:18px;padding:22px;
   backdrop-filter:blur(6px);
   box-shadow:0 20px 45px rgba(0,0,0,.45);
   opacity:0;
 }
-.card span{
-  opacity:0;
-  display:inline-block;
-  animation:cardIn .6s ease forwards;
-}
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(16px);}
-  to{opacity:1;transform:translateY(0);}
-}
+.card span{opacity:0;display:inline-block;animation:cardIn .6s ease forwards;}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
 
-/* BUTTONS */
+/* BUTTON */
 button{
-  margin-top:22px;
-  padding:12px 30px;
-  border:none;
-  border-radius:30px;
-  background:#ff6fae;
-  color:#fff;
-  font-size:15px;
-  cursor:pointer;
+  margin-top:22px;padding:12px 30px;
+  border:none;border-radius:30px;
+  background:#ff6fae;color:#fff;
+  font-size:15px;cursor:pointer;
 }
 
-/* IMAGE PAGE */
-#pageImage{
-  opacity:0;
-  pointer-events:none;
-}
-#pageImage.show{
-  opacity:1;
-  pointer-events:auto;
-}
-#pageImage img{
-  width:280px;
-  border-radius:20px;
+/* IMAGE PAGES */
+.imagePage{opacity:0;pointer-events:none;}
+.imagePage.show{opacity:1;pointer-events:auto;}
+.imagePage img{
+  width:280px;border-radius:20px;
   box-shadow:0 25px 60px rgba(0,0,0,.6);
-  opacity:0;
-  transform:scale(.96);
-  transition:opacity 2s ease, transform 2s ease;
+  opacity:0;transform:scale(.96);
+  transition:2s ease;
 }
-#pageImage.show img{
-  opacity:1;
-  transform:scale(1);
-}
+.imagePage.show img{opacity:1;transform:scale(1);}
 
-/* FINAL MESSAGE */
-#finalMsg{
-  margin-top:22px;
-  max-width:320px;
-  font-size:16px;
-  line-height:1.6;
-  opacity:0;
-  transform:translateY(20px);
+/* TEXT */
+.message{
+  margin-top:22px;max-width:320px;
+  font-size:16px;line-height:1.6;
+  opacity:0;transform:translateY(20px);
   transition:1.6s ease;
 }
-#pageImage.show #finalMsg{
-  opacity:1;
-  transform:translateY(0);
-}
-
-/* LAST NEXT BUTTON (APPEARS LATE) */
-#lastNextBtn{
-  opacity:0;
-  transform:translateY(20px);
-  transition:1.4s ease;
-}
+.imagePage.show .message{opacity:1;transform:translateY(0);}
 
 /* HEARTS */
 .heart{
-  position:fixed;
-  bottom:-20px;
-  font-size:14px;
-  animation:heartFloat linear forwards;
-  pointer-events:none;
+  position:fixed;bottom:-20px;font-size:14px;
+  animation:heartFloat linear forwards;pointer-events:none;
 }
-@keyframes heartFloat{
-  to{transform:translateY(-120vh) scale(1.4);opacity:0;}
-}
+@keyframes heartFloat{to{transform:translateY(-120vh) scale(1.4);opacity:0;}}
 
-/* FIREWORK CANVAS */
-#fireCanvas{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-}
+/* FIREWORK */
+#fireCanvas{position:fixed;inset:0;pointer-events:none;}
 </style>
 </head>
 
@@ -211,35 +116,39 @@ button{
 
 <div id="main">
 
-  <!-- PAGE 1 -->
-  <div class="page" id="pageWish">
-    <div class="title" id="titleText">Happy Birthday Pagliiii 🫰</div>
-
-    <div class="card" id="cardBox">
-      <div id="cardText">
-        Dear Pagliiii 💕,<br><br>
-        On your special day, wishing you the loveliest birthday ever 🎂✨<br>
-        May Mahadev bless you with lots of happiness 🌸<br><br>
-        Stay smiling and always be happy 🥰
-      </div>
+<!-- PAGE 1 -->
+<div class="page" id="page1">
+  <div class="title" id="titleText">Happy Birthday Pagliiii 🫰</div>
+  <div class="card" id="cardBox">
+    <div id="cardText">
+      Dear Pagliiii 💕,<br><br>
+      Wishing you the loveliest birthday ever 🎂✨<br>
+      May Mahadev bless you with happiness 🌸<br><br>
+      Stay smiling 🥰
     </div>
-
-    <button id="nextBtn">Next 💖</button>
   </div>
+  <button id="next1">Next 💖</button>
+</div>
 
-  <!-- PAGE 2 -->
-  <div class="page" id="pageImage">
-    <img src="https://files.catbox.moe/10peuo.jpg">
-
-    <div id="finalMsg">
-      This bond we share doesn’t need promises or words —<br>
-      it lives in every smile, every silence,<br>
-      and every moment we understand each other. 💞✨<br>
-      Just be happy. Always, Pagliiiii 🫶
-    </div>
-
-    <button id="lastNextBtn">Next 💗</button>
+<!-- PAGE 2 -->
+<div class="page imagePage" id="page2">
+  <img src="https://files.catbox.moe/10peuo.jpg">
+  <div class="message">
+    This bond we share doesn’t need promises or words 💞<br>
+    Just be happy. Always Pagliiii 🫶
   </div>
+  <button id="next2">Next 💗</button>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page imagePage" id="page3">
+  <img src="https://files.catbox.moe/10peuo.jpg">
+  <div class="message">
+    No matter where life takes us,<br>
+    this smile, this bond will stay forever ✨<br><br>
+    Happy Birthday once again 🎉💖
+  </div>
+</div>
 
 </div>
 
@@ -250,24 +159,18 @@ button{
 const start=document.getElementById("start");
 const main=document.getElementById("main");
 const music=document.getElementById("music");
-const nextBtn=document.getElementById("nextBtn");
-const lastNextBtn=document.getElementById("lastNextBtn");
 
 start.onclick=()=>{
   start.style.display="none";
   main.style.display="block";
   music.play().catch(()=>{});
-  startFireworks();
-  startHearts();
-
+  startHearts();startFireworks();
   setTimeout(animateTitle,1000);
-  setTimeout(()=>{cardBox.style.opacity=1; animateCard();},2800);
+  setTimeout(()=>{cardBox.style.opacity=1;animateCard();},2500);
 };
 
-/* TITLE */
 function animateTitle(){
-  const t=titleText.textContent;
-  titleText.innerHTML="";
+  const t=titleText.textContent;titleText.innerHTML="";
   titleText.style.visibility="visible";
   [...t].forEach((c,i)=>{
     const s=document.createElement("span");
@@ -277,41 +180,35 @@ function animateTitle(){
   });
 }
 
-/* CARD */
 function animateCard(){
   const nodes=[...cardText.childNodes];
-  cardText.innerHTML="";
-  let d=0;
+  cardText.innerHTML="";let d=0;
   nodes.forEach(n=>{
     if(n.nodeType===3){
       [...n.textContent].forEach(c=>{
         const s=document.createElement("span");
         s.innerHTML=c===" "?"&nbsp;":c;
         s.style.animationDelay=d+"s";
-        cardText.appendChild(s);
-        d+=.04;
+        cardText.appendChild(s);d+=.04;
       });
-    }else if(n.nodeName==="BR"){
-      cardText.appendChild(document.createElement("br"));
-    }
+    }else if(n.nodeName==="BR"){cardText.appendChild(document.createElement("br"));}
   });
-  setTimeout(()=>nextBtn.style.display="inline-block",d*1000+500);
 }
 
-nextBtn.onclick=()=>{
-  pageWish.style.opacity=0;
-  setTimeout(()=>{
-    pageImage.classList.add("show");
-    setTimeout(()=>lastNextBtn.style.opacity=1,2600); // 🔥 AFTER MESSAGE
-  },700);
+next1.onclick=()=>{
+  page1.style.opacity=0;
+  setTimeout(()=>page2.classList.add("show"),700);
+};
+next2.onclick=()=>{
+  page2.style.opacity=0;
+  setTimeout(()=>page3.classList.add("show"),700);
 };
 
 /* HEARTS */
 function startHearts(){
   setInterval(()=>{
     const h=document.createElement("div");
-    h.className="heart";
-    h.textContent="❤️";
+    h.className="heart";h.textContent="❤️";
     h.style.left=Math.random()*100+"vw";
     h.style.animationDuration=(6+Math.random()*4)+"s";
     document.body.appendChild(h);
@@ -319,13 +216,11 @@ function startHearts(){
   },800);
 }
 
-/* REALISTIC FIREWORKS */
+/* FIREWORK */
 const canvas=document.getElementById("fireCanvas");
 const ctx=canvas.getContext("2d");
-canvas.width=innerWidth;
-canvas.height=innerHeight;
+canvas.width=innerWidth;canvas.height=innerHeight;
 let particles=[];
-
 function startFireworks(){
   setInterval(()=>{
     const x=Math.random()*canvas.width;
@@ -334,38 +229,23 @@ function startFireworks(){
   },1200);
   requestAnimationFrame(loop);
 }
-
 function explode(x,y){
-  const s=fireSound.cloneNode();
-  s.volume=0.4;
-  s.play().catch(()=>{});
+  const s=fireSound.cloneNode();s.volume=.4;s.play().catch(()=>{});
   for(let i=0;i<120;i++){
     const a=Math.random()*Math.PI*2;
     const sp=Math.random()*5+2;
-    particles.push({
-      x,y,
-      vx:Math.cos(a)*sp,
-      vy:Math.sin(a)*sp,
-      life:90,
-      color:`hsl(${Math.random()*360},100%,70%)`
-    });
+    particles.push({x,y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,life:90,
+      color:`hsl(${Math.random()*360},100%,70%)`});
   }
 }
-
 function loop(){
   ctx.fillStyle="rgba(0,0,0,.2)";
   ctx.fillRect(0,0,canvas.width,canvas.height);
-
   particles.forEach((p,i)=>{
-    p.x+=p.vx;
-    p.y+=p.vy;
-    p.vy+=.03;
-    p.life--;
-    ctx.fillStyle=p.color;
-    ctx.fillRect(p.x,p.y,2.5,2.5);
-    if(p.life<=0) particles.splice(i,1);
+    p.x+=p.vx;p.y+=p.vy;p.vy+=.03;p.life--;
+    ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,2.5,2.5);
+    if(p.life<=0)particles.splice(i,1);
   });
-
   requestAnimationFrame(loop);
 }
 </script>
